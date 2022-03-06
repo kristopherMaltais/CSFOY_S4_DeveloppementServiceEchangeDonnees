@@ -8,5 +8,10 @@ namespace M01_Srv_Municipalite
 {
     public interface IDepotMunicipalites
     {
+        public Municipalite ChercherMunicipaliteParCodeGeographique(int p_codeGeographique);
+        public IEnumerable<Municipalite> ListerMunicipaliteActives();
+        public void DesactiverMunicipalite(Municipalite p_municipaliteADesactiver);
+        public void AjouterMunicipalite(Municipalite p_municipaliteAAjouter);
+        public void MAJMunicipalite(Municipalite p_municipaliteAMettreAJour);
     }
 }
