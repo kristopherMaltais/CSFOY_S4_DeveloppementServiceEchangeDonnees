@@ -8,7 +8,7 @@ using M01_DAL_Municipalite_SQLServer;
 using BibliothequeDAL;
 
 string test;
-string path = "C:\\info\\S4\\CSFOY_S4_DeveloppementServiceEchangeDonnees\\M01_Municipalite\\MUN.csv";
+string path = "C:\\info\\S4\\CSFOY_S4_DeveloppementServiceEchangeDonnees\\MUN.csv";
 
 IDepotImportationMunicipalite depot = new DepotImportationMunicipalite(path);
 

@@ -43,6 +43,7 @@ namespace M01_DAL_MunicipaliteSQLServer
 
             if (municipaliteADesactiver.EstActif)
             {
+                municipaliteADesactiver.EstActif = false;
                 this.MAJMunicipalite(municipaliteADesactiver);
             }
             
@@ -56,7 +57,10 @@ namespace M01_DAL_MunicipaliteSQLServer
 
         public void MAJMunicipalite(Municipalite p_municipaliteAMettreAJour)
         {
-            
+            MunicipaliteDTO nouvelleMunicipalite = new MunicipaliteDTO(p_municipaliteAMettreAJour);
+            this.m_DbContext.Update(nouvelleMunicipalite);
+            this.m_DbContext.SaveChanges();
+            this.m_DbContext.ChangeTracker.Clear();
         }
     }
 }
