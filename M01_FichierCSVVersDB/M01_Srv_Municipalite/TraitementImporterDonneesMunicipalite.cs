@@ -13,6 +13,7 @@ namespace M01_Srv_Municipalite
         // ** Propriétés ** //
         public IDepotImportationMunicipalite DepotCSV { get; set; }
         public IDepotMunicipalite DepotBD { get; set; }
+        public StatistiqueImportationdonnees Statistiques { get; set; }
 
         // ** Constructeurs ** //
         public TraitementImporterDonneesMunicipalite(IDepotImportationMunicipalite p_depotCSV, IDepotMunicipalite p_depotBD)
@@ -29,13 +30,37 @@ namespace M01_Srv_Municipalite
 
             this.DepotCSV = p_depotCSV;
             this.DepotBD = p_depotBD;
+            this.Statistiques = new StatistiqueImportationdonnees();
         }
 
 
         // ** Méthodes ** //
         public StatistiqueImportationdonnees Executer()
         {
-            throw new NotImplementedException();
+            IEnumerable<Municipalite> municipaliteAImporter = this.DepotCSV.LireMunicipalite();
+            Dictionary<int, Municipalite> municipalitePresenteDB = this.DepotBD.ListerMunicipalite();
+
+            foreach (Municipalite municipalite in municipaliteAImporter)
+            {
+                Municipalite municipaliteTrouvee = municipalitePresenteDB.Where(m => m.Value.CodeGeographique == municipalite.CodeGeographique).Select(m => m.Value).SingleOrDefault();
+
+                if(municipaliteTrouvee is not null)
+                {
+                    if(municipalite.NomMunicipalite != municipaliteTrouvee.NomMunicipalite || municipalite.AdresseCourriel != municipaliteTrouvee.AdresseCourriel || municipalite.AdresseWeb != municipaliteTrouvee.AdresseWeb || municipalite.DateProchaineElection != municipaliteTrouvee.DateProchaineElection || municipalite.EstActif != municipaliteTrouvee.EstActif)
+                    {
+                        this.DepotBD.MAJMunicipalite(municipalite);
+                        this.Statistiques.IncrementerNombreenregistrementsModifies();
+                    }
+                }
+                else
+                {
+                    this.DepotBD.AjouterMunicipalite(municipalite);
+                    this.Statistiques.IncrementerNombreEnregistrementsAjoutes();
+                }
+            }
+
+            return this.Statistiques;
+
         }
     }
 }

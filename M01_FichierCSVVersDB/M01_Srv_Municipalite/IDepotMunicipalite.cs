@@ -13,5 +13,6 @@ namespace M01_Srv_Municipalite
         public void DesactiverMunicipalite(Municipalite p_municipaliteADesactiver);
         public void AjouterMunicipalite(Municipalite p_municipaliteAAjouter);
         public void MAJMunicipalite(Municipalite p_municipaliteAMettreAJour);
+        public Dictionary<int, Municipalite> ListerMunicipalite();
     }
 }

@@ -69,6 +69,11 @@ namespace M01_DAL_MunicipaliteSQLServer
             List<Municipalite> listeMunicipaliteActives = this.m_DbContext.Municipalites.Where(municipalite => municipalite.EstActif == '1').Select(municipalite => municipalite.VersEntite()).ToList();
             return listeMunicipaliteActives;
         }
+        public Dictionary<int, Municipalite> ListerMunicipalite()
+        {
+            Dictionary<int, Municipalite> listeMunicipaliteActives = this.m_DbContext.Municipalites.ToDictionary(municipalite => municipalite.CodeGeographique, municipalite => municipalite.VersEntite());
+            return listeMunicipaliteActives;
+        }
         public void MAJMunicipalite(Municipalite p_municipaliteAMettreAJour)
         {
             // Préconditions
