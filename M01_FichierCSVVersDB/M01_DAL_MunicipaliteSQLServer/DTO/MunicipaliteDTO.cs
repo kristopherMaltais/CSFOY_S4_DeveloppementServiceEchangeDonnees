@@ -12,6 +12,9 @@ namespace M01_DAL_Municipalite_SQLServer.DTO
     [Table("MUNICIPALITE")]
     public class MunicipaliteDTO
     {
+        // ** Champs ** //
+
+        // ** Propriétés ** //
         [Key]
         [Column("CODEGEOGRAPHIQUE")]
         public int CodeGeographique { get; set; }
@@ -20,10 +23,10 @@ namespace M01_DAL_Municipalite_SQLServer.DTO
         public string NomMunicipalite { get; set; }
 
         [Column("ADRESSECOURRIEL")]
-        public string AdresseCourriel { get; set; }
+        public string? AdresseCourriel { get; set; }
 
         [Column("ADRESSEWEB")]
-        public string AdresseWeb { get; set; }
+        public string? AdresseWeb { get; set; }
 
         [Column("DATEPROCHAINEELECTION")]
         public DateTime? DateProchaineElection { get; set; }
@@ -31,11 +34,11 @@ namespace M01_DAL_Municipalite_SQLServer.DTO
         [Column("ESTACTIF")]
         public char EstActif { get; set; }
 
+        // ** Constructeurs ** //
         public MunicipaliteDTO()
         {
             ;
         }
-
         public MunicipaliteDTO(Municipalite p_municipalite)
         {
             char estActifConverti = p_municipalite.EstActif ? '1' : '0';
@@ -49,6 +52,7 @@ namespace M01_DAL_Municipalite_SQLServer.DTO
 
         }
 
+        // ** Méthodes ** //
         public Municipalite VersEntite()
         {
             return new Municipalite(this.CodeGeographique, this.NomMunicipalite, this.AdresseCourriel, this.AdresseWeb, this.DateProchaineElection);

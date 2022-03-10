@@ -25,11 +25,12 @@ IDepotMunicipalite depotbd = new DepotMunicipalite(DbContextGeneration.ObtenirAp
 //    depotbd.AjouterMunicipalite(municipalite);
 //}
 
-//Municipalite testmuni = depotbd.ChercherMunicipaliteParCodeGeographique(1023);
-//Console.WriteLine(testmuni);
 
-Municipalite testDesactiver = new Municipalite(1023, "Les Îles-de-la-Madeleine", "direction@muniles.ca", "www.muniles.ca", new DateTime(2025, 11, 02), true);
+IEnumerable<Municipalite> listeMunicipaliteActive = depotbd.ListerMunicipaliteActives();
 
-depotbd.DesactiverMunicipalite(testDesactiver);
+foreach (Municipalite municipalite in listeMunicipaliteActive)
+{
+    Console.WriteLine(municipalite);
+}
 
 

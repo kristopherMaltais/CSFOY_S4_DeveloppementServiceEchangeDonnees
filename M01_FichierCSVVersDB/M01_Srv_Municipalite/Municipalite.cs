@@ -8,9 +8,9 @@ namespace M01_Srv_Municipalite
 
         // ** Propriétés ** //
         public int CodeGeographique { get; set; }
-        public string NomMunicipalite { get; set; }
-        public string AdresseCourriel { get; set; }
-        public string AdresseWeb { get; set; }
+        public string? NomMunicipalite { get; set; }
+        public string? AdresseCourriel { get; set; }
+        public string? AdresseWeb { get; set; }
         public DateTime? DateProchaineElection { get; set; }
         public bool EstActif { get; set; }
 
@@ -26,7 +26,6 @@ namespace M01_Srv_Municipalite
         }
 
         // ** Méthodes ** //
-
         public override string ToString()
         {
             return $"{this.CodeGeographique}   {this.NomMunicipalite}   {this.AdresseCourriel}   {this.AdresseWeb}   {this.DateProchaineElection}   {this.EstActif}";
