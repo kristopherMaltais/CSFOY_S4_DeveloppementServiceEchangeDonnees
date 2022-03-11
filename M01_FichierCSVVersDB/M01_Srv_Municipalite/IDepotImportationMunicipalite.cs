@@ -8,6 +8,6 @@ namespace M01_Srv_Municipalite
 {
     public interface IDepotImportationMunicipalite
     {
-        public IEnumerable<Municipalite> LireMunicipalite();
+        public Dictionary<int, Municipalite> ListerMunicipalite();
     }
 }

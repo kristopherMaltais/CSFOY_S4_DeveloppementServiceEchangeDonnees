@@ -37,30 +37,37 @@ namespace M01_Srv_Municipalite
         // ** Méthodes ** //
         public StatistiqueImportationdonnees Executer()
         {
-            IEnumerable<Municipalite> municipaliteAImporter = this.DepotCSV.LireMunicipalite();
-            Dictionary<int, Municipalite> municipalitePresenteDB = this.DepotBD.ListerMunicipalite();
+            Dictionary<int, Municipalite> municipaliteSource = this.DepotCSV.ListerMunicipalite();
+            Dictionary<int, Municipalite> municipaliteDestination = this.DepotBD.ListerMunicipalite();
 
-            foreach (Municipalite municipalite in municipaliteAImporter)
+            foreach (KeyValuePair<int, Municipalite> municipalite in municipaliteSource)
             {
-                Municipalite municipaliteTrouvee = municipalitePresenteDB.Where(m => m.Value.CodeGeographique == municipalite.CodeGeographique).Select(m => m.Value).SingleOrDefault();
-
-                if(municipaliteTrouvee is not null)
+                if(municipaliteDestination.ContainsKey(municipalite.Key))
                 {
-                    if(municipalite.NomMunicipalite != municipaliteTrouvee.NomMunicipalite || municipalite.AdresseCourriel != municipaliteTrouvee.AdresseCourriel || municipalite.AdresseWeb != municipaliteTrouvee.AdresseWeb || municipalite.DateProchaineElection != municipaliteTrouvee.DateProchaineElection || municipalite.EstActif != municipaliteTrouvee.EstActif)
+                    Municipalite municipaliteAComparer = municipaliteDestination.Where(m => m.Value.CodeGeographique == municipalite.Value.CodeGeographique).Select(m => m.Value).SingleOrDefault();
+                    if(!municipalite.Value.ComparerMunicipalite(municipaliteAComparer))
                     {
-                        this.DepotBD.MAJMunicipalite(municipalite);
+                        this.DepotBD.MAJMunicipalite(municipalite.Value);
                         this.Statistiques.IncrementerNombreenregistrementsModifies();
                     }
                 }
                 else
                 {
-                    this.DepotBD.AjouterMunicipalite(municipalite);
+                    this.DepotBD.AjouterMunicipalite(municipalite.Value);
                     this.Statistiques.IncrementerNombreEnregistrementsAjoutes();
                 }
             }
 
-            return this.Statistiques;
+            foreach(KeyValuePair<int, Municipalite> municipalite in municipaliteDestination)
+            {
+                if(!municipaliteSource.ContainsKey(municipalite.Key))
+                {
+                    this.DepotBD.DesactiverMunicipalite(municipalite.Value);
+                    this.Statistiques.IncrementerNombreEnregistrementsDesactives();
+                }
+            }
 
+            return this.Statistiques;
         }
     }
 }

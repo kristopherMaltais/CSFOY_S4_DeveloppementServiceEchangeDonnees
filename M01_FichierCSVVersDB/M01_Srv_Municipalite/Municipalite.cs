@@ -26,6 +26,39 @@ namespace M01_Srv_Municipalite
         }
 
         // ** Méthodes ** //
+        public bool ComparerMunicipalite(Municipalite p_municipaliteAComparer)
+        {
+            // Precondition
+            if(p_municipaliteAComparer is null)
+            {
+                throw new ArgumentNullException(nameof(p_municipaliteAComparer), "La municipalite ne peut pas être null");
+            }
+
+            bool estMunicipaliteIdentique = true;
+
+            if(this.NomMunicipalite != p_municipaliteAComparer.NomMunicipalite)
+            {
+                estMunicipaliteIdentique = false;
+            }
+            else if(this.AdresseCourriel != p_municipaliteAComparer.AdresseCourriel)
+            {
+                estMunicipaliteIdentique = false;
+            }
+            else if(this.AdresseWeb != p_municipaliteAComparer.AdresseWeb)
+            {
+                estMunicipaliteIdentique = false;
+            }
+            else if(this.DateProchaineElection != p_municipaliteAComparer.DateProchaineElection)
+            {
+                estMunicipaliteIdentique = false;
+            }
+            else if(this.EstActif != p_municipaliteAComparer.EstActif)
+            {
+                estMunicipaliteIdentique = false;
+            }
+
+            return estMunicipaliteIdentique;
+        }
         public override string ToString()
         {
             return $"{this.CodeGeographique}   {this.NomMunicipalite}   {this.AdresseCourriel}   {this.AdresseWeb}   {this.DateProchaineElection}   {this.EstActif}";
