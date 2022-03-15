@@ -8,12 +8,10 @@ namespace M01_DAL_Import_Munic_CSV
         private string m_chemin;
 
         // ** Propriétés ** //
-        public List<Municipalite> Municipalites { get; set; }
 
         // ** Constructeurs ** //
         public DepotImportationMunicipalite(string p_chemin)
         {
-            this.Municipalites = new List<Municipalite>();
             this.m_chemin = p_chemin;
         }
 
@@ -33,22 +31,24 @@ namespace M01_DAL_Import_Munic_CSV
             string ligneFichierCsv;
             Dictionary<int, Municipalite> MunicipaliteARetourner = new Dictionary<int, Municipalite>();
 
-            using (StreamReader streamReader = new StreamReader(this.m_chemin))
+            if(File.Exists(this.m_chemin))
             {
-                streamReader.ReadLine();
-                while ((ligneFichierCsv = streamReader.ReadLine()) is not null)
+                using (StreamReader streamReader = new StreamReader(this.m_chemin))
                 {
-                    string[] ligneFichierCsvSplit = Regex.Split(ligneFichierCsv.Substring(1), "\",\"");
+                    streamReader.ReadLine();
+                    while ((ligneFichierCsv = streamReader.ReadLine()) is not null)
+                    {
+                        string[] ligneFichierCsvSplit = Regex.Split(ligneFichierCsv.Substring(1), "\",\"");
 
-                    Municipalite municipaliteAAjouter = new Municipalite(Convert.ToInt32(ligneFichierCsvSplit[codeGeographique]),
-                                                                         ligneFichierCsvSplit[nomMunicipalite],
-                                                                         ligneFichierCsvSplit[adresseCourriel],
-                                                                         ligneFichierCsvSplit[adresseSiteWeb] == "" ? null : ligneFichierCsvSplit[adresseSiteWeb],
-                                                                         ligneFichierCsvSplit[dateProchaineElection] == "" ? null : Convert.ToDateTime(ligneFichierCsvSplit[dateProchaineElection]));
-                    MunicipaliteARetourner.Add(municipaliteAAjouter.CodeGeographique, municipaliteAAjouter);
+                        Municipalite municipaliteAAjouter = new Municipalite(Convert.ToInt32(ligneFichierCsvSplit[codeGeographique]),
+                                                                             ligneFichierCsvSplit[nomMunicipalite],
+                                                                             ligneFichierCsvSplit[adresseCourriel],
+                                                                             ligneFichierCsvSplit[adresseSiteWeb] == "" ? null : ligneFichierCsvSplit[adresseSiteWeb],
+                                                                             ligneFichierCsvSplit[dateProchaineElection] == "" ? null : Convert.ToDateTime(ligneFichierCsvSplit[dateProchaineElection]));
+                        MunicipaliteARetourner.Add(municipaliteAAjouter.CodeGeographique, municipaliteAAjouter);
+                    }
                 }
             }
-
             return MunicipaliteARetourner;
         }
     }
