@@ -33,7 +33,6 @@ namespace M01_Srv_Municipalite
             this.Statistiques = new StatistiqueImportationdonnees();
         }
 
-
         // ** Méthodes ** //
         public StatistiqueImportationdonnees Executer()
         {

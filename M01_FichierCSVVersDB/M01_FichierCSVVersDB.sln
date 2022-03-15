@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "M01_DAL_Import_Munic_CSV", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M01_DAL_Import_Munic_JSON", "M01_DAL_Import_Munic_JSON\M01_DAL_Import_Munic_JSON.csproj", "{EBA10E06-3544-45B7-AC6F-2EC0EAF686A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M01_testsUnitaires_TransfertMunicipalite", "M01_testsUnitaires_TransfertMunicipalite\M01_testsUnitaires_TransfertMunicipalite.csproj", "{EFD07404-28C5-4E6C-A1DE-F46EA965A429}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{EBA10E06-3544-45B7-AC6F-2EC0EAF686A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBA10E06-3544-45B7-AC6F-2EC0EAF686A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBA10E06-3544-45B7-AC6F-2EC0EAF686A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFD07404-28C5-4E6C-A1DE-F46EA965A429}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFD07404-28C5-4E6C-A1DE-F46EA965A429}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFD07404-28C5-4E6C-A1DE-F46EA965A429}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFD07404-28C5-4E6C-A1DE-F46EA965A429}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -16,8 +16,8 @@ namespace BibliothequeDAL
         static DbContextGeneration()
         {
             _dbContextOptions = new DbContextOptionsBuilder<ApplicationDBContext>()
-                .UseSqlServer("data source = DESKTOP-7EOCD8N; Initial Catalog = Ex_municipalite; Integrated Security = True; ")
-                      .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                .UseSqlServer("data source = DESKTOP-7EOCD8N; Initial Catalog = Ex_municipalite; Integrated Security = True;")
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
 #if DEBUG
                 .LogTo(message => Debug.WriteLine(message), LogLevel.Information)
                 .EnableSensitiveDataLogging()
