@@ -43,11 +43,19 @@ namespace M01_testsUnitaires_TransfertMunicipalite
             Mock<IDepotMunicipalite> mockDepotSQL = new Mock<IDepotMunicipalite>();
             mockDepotSQL.Setup(depot => depot.ListerMunicipalite()).Returns(municipaliteDestination);
 
+            int enregistrementsAjoutesAttendu = 1;
+            int enregistrementsModifies = 0;
+            int EnregistrementsDesactives = 0;
+
             // Act
             TraitementImporterDonneesMunicipalite traitement = new TraitementImporterDonneesMunicipalite(mockDepotCSV.Object, mockDepotSQL.Object);
             traitement.Executer();
 
             // Assert
+            Assert.Equal(enregistrementsAjoutesAttendu, traitement.Statistiques.NombreEnregistrementsAjoutes);
+            Assert.Equal(enregistrementsModifies, traitement.Statistiques.NombreenregistrementsModifies);
+            Assert.Equal(EnregistrementsDesactives, traitement.Statistiques.NombreEnregistrementsDesactives);
+            
             mockDepotCSV.Verify(depot => depot.ListerMunicipalite(), Times.Once);
             mockDepotCSV.VerifyNoOtherCalls();
 
@@ -72,11 +80,19 @@ namespace M01_testsUnitaires_TransfertMunicipalite
             Mock<IDepotMunicipalite> mockDepotSQL = new Mock<IDepotMunicipalite>();
             mockDepotSQL.Setup(depot => depot.ListerMunicipalite()).Returns(municipaliteDestination);
 
+            int enregistrementsAjoutesAttendu = 0;
+            int enregistrementsModifies = 1;
+            int EnregistrementsDesactives = 0;
+
             // Act
             TraitementImporterDonneesMunicipalite traitement = new TraitementImporterDonneesMunicipalite(mockDepotCSV.Object, mockDepotSQL.Object);
             traitement.Executer();
 
             // Assert
+            Assert.Equal(enregistrementsAjoutesAttendu, traitement.Statistiques.NombreEnregistrementsAjoutes);
+            Assert.Equal(enregistrementsModifies, traitement.Statistiques.NombreenregistrementsModifies);
+            Assert.Equal(EnregistrementsDesactives, traitement.Statistiques.NombreEnregistrementsDesactives);
+
             mockDepotCSV.Verify(depot => depot.ListerMunicipalite(), Times.Once);
             mockDepotCSV.VerifyNoOtherCalls();
 
@@ -85,7 +101,7 @@ namespace M01_testsUnitaires_TransfertMunicipalite
             mockDepotSQL.VerifyNoOtherCalls();
         }
         [Fact]
-        public void Executer_EnregistrementPresentUniquementDansDestination_MiseAJour()
+        public void Executer_EnregistrementPresentUniquementDansDestination_Desactiver()
         {
             // Arrange
 
@@ -99,15 +115,58 @@ namespace M01_testsUnitaires_TransfertMunicipalite
             Mock<IDepotMunicipalite> mockDepotSQL = new Mock<IDepotMunicipalite>();
             mockDepotSQL.Setup(depot => depot.ListerMunicipalite()).Returns(municipaliteDestination);
 
+            int enregistrementsAjoutesAttendu = 0;
+            int enregistrementsModifies = 0;
+            int EnregistrementsDesactives = 1;
+
             // Act
             TraitementImporterDonneesMunicipalite traitement = new TraitementImporterDonneesMunicipalite(mockDepotCSV.Object, mockDepotSQL.Object);
             traitement.Executer();
 
             // Assert
+            Assert.Equal(enregistrementsAjoutesAttendu, traitement.Statistiques.NombreEnregistrementsAjoutes);
+            Assert.Equal(enregistrementsModifies, traitement.Statistiques.NombreenregistrementsModifies);
+            Assert.Equal(EnregistrementsDesactives, traitement.Statistiques.NombreEnregistrementsDesactives);
+
             mockDepotCSV.Verify(depot => depot.ListerMunicipalite(), Times.Once);
             mockDepotCSV.VerifyNoOtherCalls();
 
             mockDepotSQL.Verify(depot => depot.DesactiverMunicipalite(It.IsAny<Municipalite>()), Times.Once);
+            mockDepotSQL.Verify(depot => depot.ListerMunicipalite(), Times.Once);
+            mockDepotSQL.VerifyNoOtherCalls();
+        }
+        [Fact]
+        public void Executer_EnregistrementPresentDansSourceEtDestination()
+        {
+            // Arrange
+            Municipalite municipalite1 = new Municipalite(10, "alma", "alma@hotmail.ca", "alma.com", new System.DateTime(2020, 08, 24));
+            Dictionary<int, Municipalite> municipaliteSource = new Dictionary<int, Municipalite>();
+            municipaliteSource.Add(10, municipalite1);
+            Mock<IDepotImportationMunicipalite> mockDepotCSV = new Mock<IDepotImportationMunicipalite>();
+            mockDepotCSV.Setup(depot => depot.ListerMunicipalite()).Returns(municipaliteSource);
+
+            Municipalite municipalite2 = new Municipalite(10, "alma", "alma@hotmail.ca", "alma.com", new System.DateTime(2020, 08, 24));
+            Dictionary<int, Municipalite> municipaliteDestination = new Dictionary<int, Municipalite>();
+            municipaliteDestination.Add(10, municipalite2);
+            Mock<IDepotMunicipalite> mockDepotSQL = new Mock<IDepotMunicipalite>();
+            mockDepotSQL.Setup(depot => depot.ListerMunicipalite()).Returns(municipaliteDestination);
+
+            int enregistrementsAjoutesAttendu = 0;
+            int enregistrementsModifies = 0;
+            int EnregistrementsDesactives = 0;
+
+            // Act
+            TraitementImporterDonneesMunicipalite traitement = new TraitementImporterDonneesMunicipalite(mockDepotCSV.Object, mockDepotSQL.Object);
+            traitement.Executer();
+
+            // Assert
+            Assert.Equal(enregistrementsAjoutesAttendu, traitement.Statistiques.NombreEnregistrementsAjoutes);
+            Assert.Equal(enregistrementsModifies, traitement.Statistiques.NombreenregistrementsModifies);
+            Assert.Equal(EnregistrementsDesactives, traitement.Statistiques.NombreEnregistrementsDesactives);
+
+            mockDepotCSV.Verify(depot => depot.ListerMunicipalite(), Times.Once);
+            mockDepotCSV.VerifyNoOtherCalls();
+
             mockDepotSQL.Verify(depot => depot.ListerMunicipalite(), Times.Once);
             mockDepotSQL.VerifyNoOtherCalls();
         }

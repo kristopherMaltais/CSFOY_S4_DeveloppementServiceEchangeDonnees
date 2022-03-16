@@ -30,7 +30,6 @@ namespace M01_Srv_Municipalite
         {
             this.NombreEnregistrementsDesactives++;
         }
-
         public override string ToString()
         {
             return $"Nombre enregistrement ajouté: {this.NombreEnregistrementsAjoutes}   Nombre enregistrement modifié: {this.NombreenregistrementsModifies}    Nombre enregistrement désactivé: {this.NombreEnregistrementsDesactives}";
