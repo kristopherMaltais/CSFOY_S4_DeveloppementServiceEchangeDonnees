@@ -26,6 +26,7 @@ namespace M01_DAL_Import_Munic_JSON
         private Dictionary<int, Municipalite> DeserializerClients()
         {
             Racine resultatJSON = null;
+            DateTime dateNull = new DateTime(0001, 01, 01);
             Dictionary<int, Municipalite> dictionnaireARetourner = new Dictionary<int, Municipalite>(); 
 
             if (File.Exists(this.m_nomFichier))
@@ -39,14 +40,7 @@ namespace M01_DAL_Import_Munic_JSON
                 resultatJSON = JsonConvert.DeserializeObject<Racine>(chaineJSON, settings);
             }
 
-            foreach(Record enregistrement in resultatJSON.Result.Records)
-            {
-                dictionnaireARetourner.Add(enregistrement.Mcode, new Municipalite(enregistrement.Mcode,
-                                                                                  enregistrement.Munnom,
-                                                                                  enregistrement.Mcourriel,
-                                                                                  enregistrement.Mweb == "" ? null : enregistrement.Mweb,
-                                                                                  Convert.ToDateTime(enregistrement.Datelec)));
-            }
+            dictionnaireARetourner = resultatJSON.Result.Records.ToDictionary(resultat => resultat.Mcode, resultat => resultat.VersEntite());
 
             return dictionnaireARetourner;
         }
