@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "M02_ReconnaissanceVisage": {
+      "commandName": "Project",
+      "commandLineArgs": "photo.jpg"
+    }
+  }
+}
