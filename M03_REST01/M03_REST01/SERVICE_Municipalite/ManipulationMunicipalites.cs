@@ -30,7 +30,12 @@
         }
         public void AjouterMunicipalite(Municipalite p_municipalite)
         {
-            throw new NotImplementedException();
+            // Précondition
+            if(p_municipalite is null)
+            {
+                throw new ArgumentNullException(nameof(p_municipalite), "La municipalite ne peut pas être null");
+            }
+            this.m_depotMunicipalite.AjouterMunicipalite(p_municipalite);
         }
         public void MAJMunicipalite(Municipalite p_municipalite)
         {

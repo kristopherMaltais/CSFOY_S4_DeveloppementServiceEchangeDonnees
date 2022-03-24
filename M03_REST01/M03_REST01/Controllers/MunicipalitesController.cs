@@ -50,66 +50,75 @@ namespace M03_REST01.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public ActionResult Create()
+        public ActionResult Post([FromBody] MunicipaliteModel p_municipalite)
         {
-            return View();
+            if(!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            int dernierIndex = this.m_manipulationMunicipalites.ListerMunicipalites().OrderByDescending(municipalite => municipalite.CodeGeographique).FirstOrDefault()?.CodeGeographique ?? 0;
+            p_municipalite.MunicipaliteId = dernierIndex + 1;
+
+            this.m_manipulationMunicipalites.AjouterMunicipalite(p_municipalite.VersIdentite());
+            return CreatedAtAction(nameof(Get), new { id = p_municipalite.MunicipaliteId }, p_municipalite);
         }
 
-            // POST: MunicipalitesController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //    // POST: MunicipalitesController/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create(IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
-            // GET: MunicipalitesController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+        //    // GET: MunicipalitesController/Edit/5
+        //public ActionResult Edit(int id)
+        //{
+        //    return View();
+        //}
 
-            // POST: MunicipalitesController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //    // POST: MunicipalitesController/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
-            // GET: MunicipalitesController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+        //    // GET: MunicipalitesController/Delete/5
+        //public ActionResult Delete(int id)
+        //{
+        //    return View();
+        //}
 
-            // POST: MunicipalitesController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //    // POST: MunicipalitesController/Delete/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
     }
 }
