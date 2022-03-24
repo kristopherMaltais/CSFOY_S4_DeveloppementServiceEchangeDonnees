@@ -26,7 +26,13 @@
         }
         public void SupprimerMunicipalite(int p_codeGeographique)
         {
-            throw new NotImplementedException();
+            // Précondition
+            if(p_codeGeographique < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(p_codeGeographique), "identifiant ne peut pas être négatif");
+            }
+
+            this.m_depotMunicipalite.DesactiverMunicipalite(this.ObtenirMunicipalite(p_codeGeographique));
         }
         public void AjouterMunicipalite(Municipalite p_municipalite)
         {
@@ -39,7 +45,13 @@
         }
         public void MAJMunicipalite(Municipalite p_municipalite)
         {
-            throw new NotImplementedException();
+            // Précondition
+            if(p_municipalite is null)
+            {
+                throw new ArgumentNullException(nameof(p_municipalite), "La municipalite ne peut pas être null");
+            }
+
+            this.m_depotMunicipalite.MAJMunicipalite(p_municipalite);
         }
     }
 }

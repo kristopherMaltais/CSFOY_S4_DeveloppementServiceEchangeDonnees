@@ -64,61 +64,45 @@ namespace M03_REST01.Controllers
             return CreatedAtAction(nameof(Get), new { id = p_municipalite.MunicipaliteId }, p_municipalite);
         }
 
-        //    // POST: MunicipalitesController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
 
-        //    // GET: MunicipalitesController/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
+        // GET: MunicipalitesController/Edit/5
+        [HttpPut("{id}")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public ActionResult put(int id, [FromBody] MunicipaliteModel p_municipaliteModel)
+        {
+            if(!ModelState.IsValid || id != p_municipaliteModel.MunicipaliteId)
+            {
+                return BadRequest();
+            }
 
-        //    // POST: MunicipalitesController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            if(!this.m_manipulationMunicipalites.ListerMunicipalites().Any(municipalite => municipalite.CodeGeographique == id))
+            {
+                return NotFound();
+            }
 
-        //    // GET: MunicipalitesController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
+            this.m_manipulationMunicipalites.MAJMunicipalite(p_municipaliteModel.VersIdentite());
 
-        //    // POST: MunicipalitesController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            return NoContent();
+        }
+
+
+
+        // GET: MunicipalitesController/Delete/5
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public ActionResult Delete(int id)
+        {
+            if (!this.m_manipulationMunicipalites.ListerMunicipalites().Any(municipalite => municipalite.CodeGeographique == id))
+            {
+                return NotFound();
+            }
+
+            this.m_manipulationMunicipalites.SupprimerMunicipalite(id);
+
+            return NoContent();
+        }
     }
 }

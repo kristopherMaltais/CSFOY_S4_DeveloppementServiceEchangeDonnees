@@ -77,6 +77,7 @@ namespace M03_REST01.Data
             }
 
             MunicipaliteDTO nouvelleMunicipalite = new MunicipaliteDTO(p_municipaliteAMettreAJour);
+            this.m_DbContext.ChangeTracker.Clear();
             this.m_DbContext.Update(nouvelleMunicipalite);
             this.m_DbContext.SaveChanges();
             this.m_DbContext.ChangeTracker.Clear();
