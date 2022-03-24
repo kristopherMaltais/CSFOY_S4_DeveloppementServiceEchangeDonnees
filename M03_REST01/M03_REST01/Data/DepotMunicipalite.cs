@@ -39,7 +39,7 @@ namespace M03_REST01.Data
         public Municipalite ChercherMunicipaliteParCodeGeographique(int p_codeGeographique)
         {
             MunicipaliteDTO municipaliteTrouvee = this.m_DbContext.Municipalites.Where(municipalite => municipalite.CodeGeographique == p_codeGeographique).FirstOrDefault();
-            return municipaliteTrouvee.VersEntite();
+            return municipaliteTrouvee is not null ? municipaliteTrouvee.VersEntite() : null;
         }
         public void DesactiverMunicipalite(Municipalite p_municipaliteADesactiver)
         {

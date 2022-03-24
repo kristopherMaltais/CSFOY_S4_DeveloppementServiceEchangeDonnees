@@ -13,6 +13,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddScoped<IDepotMunicipalite, DepotMunicipalite>();
+builder.Services.AddScoped<ManipulationMunicipalites>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSwaggerDocument();
 
@@ -45,9 +47,3 @@ app.MapRazorPages();
 app.UseOpenApi();
 app.UseSwaggerUi3();
 app.Run();
-
-IDepotMunicipalite test = new DepotMunicipalite(DbContextGeneration.ObtenirApplicationDBContext());
-
-Municipalite muniTest = test.ChercherMunicipaliteParCodeGeographique(53072);
-
-Console.WriteLine(muniTest.ToString());
