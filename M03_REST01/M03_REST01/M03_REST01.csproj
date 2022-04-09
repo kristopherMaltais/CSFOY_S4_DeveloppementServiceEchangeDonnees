@@ -16,4 +16,8 @@
     <PackageReference Include="NSwag.AspNetCore" Version="13.15.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\M03_ServicesSOAP\M03_ServicesSOAP.csproj" />
+  </ItemGroup>
+
 </Project>

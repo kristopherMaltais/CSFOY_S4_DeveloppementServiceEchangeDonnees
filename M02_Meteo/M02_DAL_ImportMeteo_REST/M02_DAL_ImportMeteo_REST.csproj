@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\M02_BL_Meteo\M02_BL_Meteo.csproj" />
+    <ProjectReference Include="..\M02_Meteo_JSONStructure\M02_Meteo_JSONStructure.csproj" />
+  </ItemGroup>
+
+</Project>

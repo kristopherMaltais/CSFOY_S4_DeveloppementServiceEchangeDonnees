@@ -16,10 +16,6 @@ namespace M01_DAL_Import_Munic_CSV
         }
 
         // ** méthodes ** //
-        public void MAJMunicipalite(Municipalite p_municipaliteAMettreAJour)
-        {
-            throw new NotImplementedException();
-        }
         public Dictionary<int, Municipalite> ListerMunicipalite()
         {
             int codeGeographique = 0;

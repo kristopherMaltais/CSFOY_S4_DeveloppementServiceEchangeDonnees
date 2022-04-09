@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace M01_DAL_Import_Munic_JSON
 {
-    internal class Racine
+    public class Racine
     {
         public Result Result { get; set; }
 

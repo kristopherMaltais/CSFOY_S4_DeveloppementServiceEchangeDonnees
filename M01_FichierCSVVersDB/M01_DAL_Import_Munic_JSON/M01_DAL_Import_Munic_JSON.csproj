@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\M01_DAL_MunicipaliteSQLServer\M01_DAL_MunicipaliteSQLServer.csproj" />
+    <ProjectReference Include="..\M01_JSON_Structure\M01_JSON_Structure.csproj" />
     <ProjectReference Include="..\M01_Srv_Municipalite\M01_Srv_Municipalite.csproj" />
   </ItemGroup>
 

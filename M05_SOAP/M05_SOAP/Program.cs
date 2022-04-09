@@ -5,7 +5,7 @@ using System.ServiceModel;
 var builder = WebApplication.CreateBuilder(args);
 
 // INJECTION DES DÉPENDANCES
-builder.Services.AddSingleton<IOperation, Operation>();
+builder.Services.AddScoped<IOperation, Operation>();
 builder.Services.AddSoapCore();
 
 var app = builder.Build();

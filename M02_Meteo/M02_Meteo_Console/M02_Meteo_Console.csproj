@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\M02_BL_Meteo\M02_BL_Meteo.csproj" />
+    <ProjectReference Include="..\M02_DAL_ImportMeteo_REST\M02_DAL_ImportMeteo_REST.csproj" />
+  </ItemGroup>
+
+</Project>

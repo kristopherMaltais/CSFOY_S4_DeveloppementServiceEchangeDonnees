@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M03_REST01", "M03_REST01\M03_REST01.csproj", "{F36D1054-54DB-4688-83F8-1126E2F67B03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "M03_REST01", "M03_REST01\M03_REST01.csproj", "{F36D1054-54DB-4688-83F8-1126E2F67B03}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "M03_ServicesSOAP", "M03_ServicesSOAP\M03_ServicesSOAP.csproj", "{F2EF7144-9716-4244-96CF-9B6746B58004}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M03_ClientSOAP", "M03_ClientSOAP\M03_ClientSOAP.csproj", "{2F3D8709-9F06-4E6E-8AC7-BC4CE0154766}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{F36D1054-54DB-4688-83F8-1126E2F67B03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F36D1054-54DB-4688-83F8-1126E2F67B03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F36D1054-54DB-4688-83F8-1126E2F67B03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2EF7144-9716-4244-96CF-9B6746B58004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2EF7144-9716-4244-96CF-9B6746B58004}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2EF7144-9716-4244-96CF-9B6746B58004}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2EF7144-9716-4244-96CF-9B6746B58004}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F3D8709-9F06-4E6E-8AC7-BC4CE0154766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F3D8709-9F06-4E6E-8AC7-BC4CE0154766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F3D8709-9F06-4E6E-8AC7-BC4CE0154766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F3D8709-9F06-4E6E-8AC7-BC4CE0154766}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
