@@ -12,5 +12,6 @@ namespace M03_REST01.Data
         }
 
         public DbSet<MunicipaliteDTO> Municipalites { get; set; }
+        public DbSet<ClefAPIDTO> CLefAPI { get; set; }
     }
 }

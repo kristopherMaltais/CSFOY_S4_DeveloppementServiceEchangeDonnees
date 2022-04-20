@@ -1,9 +1,11 @@
-﻿using M03_REST01.SERVICE_Municipalite;
+﻿using M03_REST01.Filter;
+using M03_REST01.SERVICE_Municipalite;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace M03_REST01.Controllers
 {
+    [ApiKey()]
     [Route("api/municipalites")]
     [ApiController]
     public class MunicipalitesController : Controller

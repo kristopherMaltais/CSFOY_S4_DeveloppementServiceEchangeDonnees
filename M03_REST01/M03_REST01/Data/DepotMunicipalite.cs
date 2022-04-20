@@ -1,4 +1,5 @@
 ﻿using M03_REST01.DAL_MunicipaliteSQLServer.DTO;
+using M03_REST01.Entite;
 using M03_REST01.SERVICE_Municipalite;
 
 namespace M03_REST01.Data
@@ -81,6 +82,12 @@ namespace M03_REST01.Data
             this.m_DbContext.Update(nouvelleMunicipalite);
             this.m_DbContext.SaveChanges();
             this.m_DbContext.ChangeTracker.Clear();
+        }
+
+        public ClefAPI ObtenirClefAPI()
+        {
+            ClefAPI clef = this.m_DbContext.CLefAPI.Select(clef => clef.VersEntite()).SingleOrDefault();
+            return clef;
         }
     }
 }

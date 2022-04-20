@@ -1,4 +1,6 @@
-﻿namespace M03_REST01.SERVICE_Municipalite
+﻿using M03_REST01.Entite;
+
+namespace M03_REST01.SERVICE_Municipalite
 {
     public interface IDepotMunicipalite
     {
@@ -8,5 +10,6 @@
         public void AjouterMunicipalite(Municipalite p_municipaliteAAjouter);
         public void MAJMunicipalite(Municipalite p_municipaliteAMettreAJour);
         public Dictionary<int, Municipalite> ListerMunicipalite();
+        public ClefAPI ObtenirClefAPI();
     }
 }
