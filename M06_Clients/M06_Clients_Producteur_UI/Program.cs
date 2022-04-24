@@ -1,4 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿//// PRODUCTEUR
+
 using RabbitMQ.Client;
 using System.Text;
 
@@ -8,11 +9,11 @@ using (IConnection connection = factory.CreateConnection())
 {
     using (IModel channel = connection.CreateModel())
     {
-        channel.QueueDeclare(queue: "test", durable: false, exclusive: false, autoDelete: false, arguments: null);
+        channel.QueueDeclare(queue: "m06-clients", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
-        string message = "test";
+        string message = "test2";
         byte[] body = Encoding.UTF8.GetBytes(message);
 
-        channel.BasicPublish(exchange: "", routingKey: "test", body: body);
+        channel.BasicPublish(exchange: "", routingKey: "m06-clients", body: body);
     }
 }
