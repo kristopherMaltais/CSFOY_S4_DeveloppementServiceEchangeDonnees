@@ -16,7 +16,7 @@
         // ** Méthodes ** //
         public void Creer(Client p_client)
         {
-            throw new NotImplementedException();
+            m_clients.CreerClient(p_client);
         }
     }
 }

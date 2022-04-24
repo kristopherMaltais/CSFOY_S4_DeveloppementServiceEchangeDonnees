@@ -28,7 +28,7 @@ namespace M06_DAL_Clients_SQLServeur
             // Préconditions
             if (p_client is null)
             {
-                throw new ArgumentNullException(nameof(p_client), "La municipalité ne peut pas être null");
+                throw new ArgumentNullException(nameof(p_client), "Le client ne peut pas être null");
             }
 
             ClientSQLServeurDTO nouveauClient = new ClientSQLServeurDTO(p_client);

@@ -5,9 +5,19 @@ using RabbitMQ.Client.Events;
 using System.Text;
 using Newtonsoft.Json;
 using M06_CasUtilisation_Clients;
+using M06_CasUtilisation_Clients;
+using M06_DAL_Clients_SQLServeur;
+using Microsoft.EntityFrameworkCore;
 
 ManualResetEvent waitHandle = new ManualResetEvent(false);
 ConnectionFactory factory = new ConnectionFactory() { HostName = "localhost" };
+
+
+IDepotClients depotClient = new DepotClientSQLServeur(DbContextGeneration.ObtenirApplicationDBContext());
+ManipulationClient manipulerClient = new ManipulationClient(depotClient);
+
+Client clientDeserialise = null;
+
 using (IConnection connection = factory.CreateConnection())
 {
     using (IModel channel = connection.CreateModel())
@@ -20,31 +30,24 @@ using (IConnection connection = factory.CreateConnection())
             byte[] donnees = ea.Body.ToArray();
             string message = Encoding.UTF8.GetString(donnees);
 
+
+            // setting pour la deserialisation
             JsonSerializerSettings settings = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto
             };
 
-            Client clientDeserialized = JsonConvert.DeserializeObject<Client>(message, settings);
-            clientDeserialized.Identifiant = Guid.NewGuid();
-            Console.WriteLine(clientDeserialized.ToString());
+            // Deserialiser le client
+            clientDeserialise = JsonConvert.DeserializeObject<Client>(message, settings);
+            clientDeserialise.Identifiant = Guid.NewGuid();
+            manipulerClient.Creer(clientDeserialise);
             channel.BasicAck(ea.DeliveryTag, false);
         };
-
+ 
         channel.BasicConsume(queue: "m06-clients", autoAck: false, consumer: consommateur);
         waitHandle.WaitOne();
     }
 
 }
-
-
-
-//using M06_CasUtilisation_Clients;
-//using M06_DAL_Clients_SQLServeur;
-//using Microsoft.EntityFrameworkCore;
-//IDepotClients test = new DepotClientSQLServeur(DbContextGeneration.ObtenirApplicationDBContext());
-//ManipulationClient manipulationTest = new ManipulationClient(test);
-//Client clientTest = new Client(Guid.NewGuid(), "Kristopher", "Maltais", "test@test.com", "418-720-3363");
-//test.CreerClient(clientTest);
 
 
