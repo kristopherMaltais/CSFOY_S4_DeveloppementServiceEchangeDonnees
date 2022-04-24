@@ -11,11 +11,11 @@ namespace M06_CasUtilisation_Clients
         // ** Champs ** //
 
         // ** Propriétés ** //
-        public Guid Identifiant { get; private set; }
-        public string Prenom { get; private set; }
-        public string Nom { get; private set; }
-        public string Courriel { get; private set; }
-        public string NumeroTelephone { get; private set; }
+        public Guid Identifiant { get; set; }
+        public string Prenom { get; set; }
+        public string Nom { get; set; }
+        public string Courriel { get; set; }
+        public string NumeroTelephone { get; set; }
 
         // ** Constructeur ** //
         public Client(Guid p_identifiant, string p_prenom, string p_nom, string p_courriel, string p_numeroTelephone)
@@ -28,5 +28,10 @@ namespace M06_CasUtilisation_Clients
         }
 
         // ** methodes ** //
+
+        public override string ToString()
+        {
+            return $"Id: {this.Identifiant} -- Prenom: {this.Prenom} -- Nom: {this.Nom} -- Courriel {this.Courriel} -- tel: {this.NumeroTelephone}";
+        }
     }
 }
