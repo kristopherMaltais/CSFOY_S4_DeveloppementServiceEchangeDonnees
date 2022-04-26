@@ -1,26 +1,25 @@
-﻿using System;
+﻿using M06_CasUtilisation_Clients;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace M06_CasUtilisation_Clients
+namespace M06_Clients_Consommateur
 {
-    public class Client
+    public class ClientDTO
     {
         // ** Champs ** //
 
         // ** Propriétés ** //
-        public Guid Identifiant { get; set; }
         public string Prenom { get; set; }
         public string Nom { get; set; }
         public string Courriel { get; set; }
         public string NumeroTelephone { get; set; }
 
         // ** Constructeur ** //
-        public Client(string p_prenom, string p_nom, string p_courriel, string p_numeroTelephone)
+        public ClientDTO(string p_prenom, string p_nom, string p_courriel, string p_numeroTelephone)
         {
-            this.Identifiant = Guid.NewGuid();
             this.Prenom = p_prenom;
             this.Nom = p_nom;
             this.Courriel = p_courriel;
@@ -28,9 +27,10 @@ namespace M06_CasUtilisation_Clients
         }
 
         // ** methodes ** //
-        public override string ToString()
+        public Client versEntite()
         {
-            return $"Id: {this.Identifiant} -- Prenom: {this.Prenom} -- Nom: {this.Nom} -- Courriel {this.Courriel} -- tel: {this.NumeroTelephone}";
+            Client nouveauClient = new Client(this.Prenom, this.Nom, this.Courriel, this.NumeroTelephone);
+            return nouveauClient;
         }
     }
 }

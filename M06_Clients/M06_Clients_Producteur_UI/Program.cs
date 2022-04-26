@@ -7,25 +7,33 @@ using System.Text;
 
 
 // Créer le client (simulation d'interface)
-MessageClient clientTest = new MessageClient("kristopher", "maltais", "test@ulaval.ca", "418-720-3363");
 
-
-// Serialiser l'objet MessageClient pour prépartion envoie dans la fil
-string clientSerialise = JsonConvert.SerializeObject(clientTest);
-
-
-ConnectionFactory factory = new ConnectionFactory() { HostName = "localhost" };
-
-using (IConnection connection = factory.CreateConnection())
+while(true)
 {
-    using (IModel channel = connection.CreateModel())
+    Console.ReadLine();
+    MessageClient clientTest = new MessageClient("kristopher", "maltais", "test@ulaval.ca", "418-720-3363");
+
+    // Créer un enveloppe pour le client
+    EnveloppeClient envoloppeClient = new EnveloppeClient(clientTest);
+
+    // Serialiser l'objet MessageClient pour prépartion envoie dans la fil
+    string envoloppeSerialisee = JsonConvert.SerializeObject(envoloppeClient);
+
+
+    ConnectionFactory factory = new ConnectionFactory() { HostName = "localhost" };
+
+    using (IConnection connection = factory.CreateConnection())
     {
-        channel.QueueDeclare(queue: "m06-clients", durable: false, exclusive: false, autoDelete: false, arguments: null);
+        using (IModel channel = connection.CreateModel())
+        {
+            channel.QueueDeclare(queue: "m06-clients", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
-        // encoder la string JSON en tableau de byte pour envoyer
-        byte[] body = Encoding.UTF8.GetBytes(clientSerialise);
+            // encoder la string JSON en tableau de byte pour envoyer
+            byte[] body = Encoding.UTF8.GetBytes(envoloppeSerialisee);
 
-        // envoyer le client dans la fil
-        channel.BasicPublish(exchange: "", routingKey: "m06-clients", body: body);
+            // envoyer le client dans la fil
+            channel.BasicPublish(exchange: "", routingKey: "m06-clients", body: body);
+        }
     }
+    Console.WriteLine("Client ajouté avec succès");
 }

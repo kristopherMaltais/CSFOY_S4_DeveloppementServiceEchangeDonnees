@@ -8,6 +8,7 @@ using M06_CasUtilisation_Clients;
 using M06_CasUtilisation_Clients;
 using M06_DAL_Clients_SQLServeur;
 using Microsoft.EntityFrameworkCore;
+using M06_Clients_Consommateur;
 
 ManualResetEvent waitHandle = new ManualResetEvent(false);
 ConnectionFactory factory = new ConnectionFactory() { HostName = "localhost" };
@@ -15,8 +16,7 @@ ConnectionFactory factory = new ConnectionFactory() { HostName = "localhost" };
 
 IDepotClients depotClient = new DepotClientSQLServeur(DbContextGeneration.ObtenirApplicationDBContext());
 ManipulationClient manipulerClient = new ManipulationClient(depotClient);
-
-Client clientDeserialise = null;
+EnveloppeDTO enveloppeDeserialise = null;
 
 using (IConnection connection = factory.CreateConnection())
 {
@@ -38,9 +38,14 @@ using (IConnection connection = factory.CreateConnection())
             };
 
             // Deserialiser le client
-            clientDeserialise = JsonConvert.DeserializeObject<Client>(message, settings);
-            clientDeserialise.Identifiant = Guid.NewGuid();
-            manipulerClient.Creer(clientDeserialise);
+            enveloppeDeserialise = JsonConvert.DeserializeObject<EnveloppeDTO>(message, settings);
+            Client clientEntite = enveloppeDeserialise.Client.versEntite();
+
+            if(enveloppeDeserialise is not null)
+            {
+                manipulerClient.Creer(clientEntite);
+            }
+
             channel.BasicAck(ea.DeliveryTag, false);
         };
  
