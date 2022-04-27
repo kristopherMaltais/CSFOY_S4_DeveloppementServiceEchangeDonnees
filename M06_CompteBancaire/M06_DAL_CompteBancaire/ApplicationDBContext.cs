@@ -13,6 +13,7 @@ namespace M06_DAL_CompteBancaire
             ;
         }
 
-        public DbSet<CompteBancaireSQLDTO> Municipalites { get; set; }
+        public DbSet<CompteSQLDTO> Comptes { get; set; }
+        public DbSet<TransactionSQLDTO> Transactions { get; set; }
     }
 }

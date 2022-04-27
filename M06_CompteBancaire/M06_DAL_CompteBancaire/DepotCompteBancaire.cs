@@ -1,4 +1,5 @@
 ﻿using M06_BL_CompteBancaire;
+using M06_DAL_CompteBancaire.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,37 +30,62 @@ namespace M06_DAL_CompteBancaire
         // ** Méthodes ** //
         public void CreerCompte(Compte p_compteACreer)
         {
-            throw new NotImplementedException();
-        }
+            // Préconditions
+            if (p_compteACreer is null)
+            {
+                throw new ArgumentNullException(nameof(p_compteACreer), "Le compte ne peut pas être null");
+            }
 
-        public void CreerTransaction(Compte p_transactionACreer)
+            CompteSQLDTO nouveauCompte = new CompteSQLDTO(p_compteACreer);
+            this.m_DbContext.Add(nouveauCompte);
+            this.m_DbContext.SaveChanges();
+            this.m_DbContext.ChangeTracker.Clear();
+        }
+        public void CreerTransaction(Transaction p_transactionACreer)
         {
-            throw new NotImplementedException();
-        }
+            // Préconditions
+            if (p_transactionACreer is null)
+            {
+                throw new ArgumentNullException(nameof(p_transactionACreer), "La transaction ne peut pas être null");
+            }
 
-        public void Modificier(Compte p_compteAModifier)
+            TransactionSQLDTO nouvelleTransaction = new TransactionSQLDTO(p_transactionACreer);
+            this.m_DbContext.Add(nouvelleTransaction);
+            this.m_DbContext.SaveChanges();
+            this.m_DbContext.ChangeTracker.Clear();
+        }
+        public void ModifierCompte(Compte p_compteAModifier)
         {
-            throw new NotImplementedException();
-        }
+            // Préconditions
+            if (p_compteAModifier is null)
+            {
+                throw new ArgumentNullException(nameof(p_compteAModifier), "Le compte ne peut pas être null");
+            }
 
+            CompteSQLDTO compteAModifier = new CompteSQLDTO(p_compteAModifier);
+            this.m_DbContext.Update(compteAModifier);
+            this.m_DbContext.SaveChanges();
+            this.m_DbContext.ChangeTracker.Clear();
+        }
         public Compte ObtenirCompte(Guid p_identifiantCompte)
         {
-            throw new NotImplementedException();
+            CompteSQLDTO compteTrouve = this.m_DbContext.Comptes.Where(compte => compte.CompteID == p_identifiantCompte).FirstOrDefault();
+            return compteTrouve.VersEntite();
         }
-
         public IEnumerable<Compte> ObtenirComptes()
         {
-            throw new NotImplementedException();
+            List<Compte> comptes = this.m_DbContext.Comptes.Select(municipalite => municipalite.VersEntite()).ToList();
+            return comptes;
         }
-
-        public Compte ObtenirTransaction(Guid p_identifiantTransaction)
+        public Transaction ObtenirTransaction(Guid p_identifiantTransaction)
         {
-            throw new NotImplementedException();
+            TransactionSQLDTO TransactionTrouvee = this.m_DbContext.Transactions.Where(transaction => transaction.TransactionID == p_identifiantTransaction).FirstOrDefault();
+            return TransactionTrouvee.VersEntite();
         }
-
-        public IEnumerable<Compte> ObtenirTransactions()
+        public IEnumerable<Transaction> ObtenirTransactions()
         {
-            throw new NotImplementedException();
+            List<Transaction> transactions = this.m_DbContext.Transactions.Select(transaction => transaction.VersEntite()).ToList();
+            return transactions;
         }
     }
 }
