@@ -8,9 +8,9 @@ namespace M06_DAL_CompteBancaire
 {
     public class ApplicationDBContext : DbContext
     {
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> dbContextOptions) : base(dbContextOptions)
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> dbContextOptions)
+            : base(dbContextOptions)
         {
-            ;
         }
 
         public DbSet<CompteSQLDTO> Comptes { get; set; }

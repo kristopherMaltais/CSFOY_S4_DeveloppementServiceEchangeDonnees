@@ -69,7 +69,7 @@ namespace M06_DAL_CompteBancaire
         }
         public Compte ObtenirCompte(Guid p_identifiantCompte)
         {
-            CompteSQLDTO compteTrouve = this.m_DbContext.Comptes.Where(compte => compte.CompteID == p_identifiantCompte).FirstOrDefault();
+            CompteSQLDTO compteTrouve = this.m_DbContext.Comptes.Where(compte => Guid.Parse(compte.CompteID) == p_identifiantCompte).FirstOrDefault();
             return compteTrouve.VersEntite();
         }
         public IEnumerable<Compte> ObtenirComptes()

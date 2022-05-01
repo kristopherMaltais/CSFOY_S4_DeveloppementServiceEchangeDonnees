@@ -15,7 +15,7 @@ namespace M06_DAL_CompteBancaire
         static DbContextGeneration()
         {
             _dbContextOptions = new DbContextOptionsBuilder<ApplicationDBContext>()
-                .UseSqlServer("data source = DESKTOP-7EOCD8N; Initial Catalog = Ex_municipalite; Integrated Security = True;")
+                .UseSqlServer("data source = DESKTOP-7EOCD8N; Initial Catalog = Ex_compteBancaire; Integrated Security = True;")
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
 #if DEBUG
                 .LogTo(message => Debug.WriteLine(message), LogLevel.Information)

@@ -1,4 +1,6 @@
 using M06_API_CompteBancaire.Data;
+using M06_BL_CompteBancaire;
+using M06_DAL_CompteBancaire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,14 +8,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<ApplicationDBContext>();
+
 builder.Services.AddControllersWithViews();
 
+// INJECTION DES DÉPENDANCES
+builder.Services.AddScoped<IDepot, DepotCompteBancaire>();
+builder.Services.AddScoped<ManipulerCompteBancaire>();
+
+builder.Services.AddSwaggerDocument();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,6 +36,7 @@ else
     app.UseHsts();
 }
 
+// CONFIGURATION
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -40,5 +49,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
-
+app.UseOpenApi();
+app.UseSwaggerUi3();
 app.Run();

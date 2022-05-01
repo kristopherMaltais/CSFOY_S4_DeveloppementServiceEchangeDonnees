@@ -1,83 +1,89 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using M06_API_CompteBancaire.Controllers.DTO;
+using M06_BL_CompteBancaire;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
+using System.Text;
 
 namespace M06_API_CompteBancaire.Controllers
 {
+    //[ApiKey()]
+    [Route("api/transactions")]
+    [ApiController]
     public class TransactionController : Controller
     {
-        // GET: TransactionController
-        public ActionResult Index()
+        // ** Champs ** //
+        private ManipulerCompteBancaire m_manipulationCompteBancaire;
+
+        // ** Propriétés ** //
+
+        // ** Constructeurs ** //
+        public TransactionController(ManipulerCompteBancaire p_manipulationCompteBancaire)
         {
-            return View();
+            this.m_manipulationCompteBancaire = p_manipulationCompteBancaire;
         }
 
-        // GET: TransactionController/Details/5
-        public ActionResult Details(int id)
+        // ** Méthodes ** //
+        // GET: api/comptesBancaires
+        [HttpGet]
+        [ProducesResponseType(200)]
+        public ActionResult<IEnumerable<TransactionAPIDTO>> Get()
         {
-            return View();
+            IEnumerable<Transaction> transactions = this.m_manipulationCompteBancaire.ObtenirTransactions();
+            return Ok(transactions.Select(transaction => new TransactionAPIDTO(transaction)));
         }
 
-        // GET: TransactionController/Create
-        public ActionResult Create()
+        //GET: api/comptesBancaires/id
+        [HttpGet("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public ActionResult<TransactionAPIDTO> Get(Guid id)
         {
-            return View();
+            Transaction transactionTrouvee = this.m_manipulationCompteBancaire.ObtenirTransaction(id);
+
+            if (transactionTrouvee is not null)
+            {
+                return Ok(new TransactionAPIDTO(transactionTrouvee));
+            }
+
+            return NotFound();
         }
 
-        // POST: TransactionController/Create
+        // POST: api/comptesBancaires
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public ActionResult Post([FromBody] TransactionAPIDTO p_transaction)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                return BadRequest();
             }
-            catch
+
+            p_transaction.TransactionID = Guid.NewGuid();
+
+            // RABBIT MQ
+            ConnectionFactory factory = new ConnectionFactory() { HostName = "localhost" };
+            string message = JsonConvert.SerializeObject(p_transaction);
+            using (IConnection connection = factory.CreateConnection())
             {
-                return View();
+                using (IModel channel = connection.CreateModel())
+                {
+                    channel.QueueDeclare(queue: "transaction", durable: false, exclusive: false, autoDelete: false, arguments: null);
+
+                    byte[] body = Encoding.UTF8.GetBytes(message);
+
+                    channel.BasicPublish(exchange: "", routingKey: "transaction", body: body);
+                }
             }
+            // FIN RABBIT MQ
+
+            return CreatedAtAction(nameof(Get), new { id = p_transaction.TransactionID }, p_transaction);
         }
 
-        // GET: TransactionController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: TransactionController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: TransactionController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: TransactionController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
+        // PUT
+        // DELETE
     }
 }
