@@ -69,17 +69,17 @@ namespace M06_DAL_CompteBancaire
         }
         public Compte ObtenirCompte(Guid p_identifiantCompte)
         {
-            CompteSQLDTO compteTrouve = this.m_DbContext.Comptes.Where(compte => Guid.Parse(compte.CompteID) == p_identifiantCompte).FirstOrDefault();
+            CompteSQLDTO compteTrouve = this.m_DbContext.Comptes.Where(compte => compte.CompteID == p_identifiantCompte.ToString()).FirstOrDefault();
             return compteTrouve.VersEntite();
         }
         public IEnumerable<Compte> ObtenirComptes()
         {
-            List<Compte> comptes = this.m_DbContext.Comptes.Select(municipalite => municipalite.VersEntite()).ToList();
+            List<Compte> comptes = this.m_DbContext.Comptes.Select(compte => compte.VersEntite()).ToList();
             return comptes;
         }
         public Transaction ObtenirTransaction(Guid p_identifiantTransaction)
         {
-            TransactionSQLDTO TransactionTrouvee = this.m_DbContext.Transactions.Where(transaction => transaction.TransactionID == p_identifiantTransaction).FirstOrDefault();
+            TransactionSQLDTO TransactionTrouvee = this.m_DbContext.Transactions.Where(transaction => transaction.TransactionID == p_identifiantTransaction.ToString()).FirstOrDefault();
             return TransactionTrouvee.VersEntite();
         }
         public IEnumerable<Transaction> ObtenirTransactions()

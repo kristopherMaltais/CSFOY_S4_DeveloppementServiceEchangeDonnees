@@ -3,10 +3,11 @@
 
 using M06_BL_CompteBancaire;
 using M06_DAL_CompteBancaire;
+using M06_TraitementCreationsModifications;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+using System.Text;
 
-IDepot depotTest = new DepotCompteBancaire(DbContextGeneration.ObtenirApplicationDBContext());
-ManipulerCompteBancaire manipuler = new ManipulerCompteBancaire(depotTest);
-
-IEnumerable<Compte> compte1 = manipuler.ObtenirComptes();
-
-Console.WriteLine(compte1.First().TypeCompte);
+TraitementFilMessage traitementFilMessage = new TraitementFilMessage();
+traitementFilMessage.EcouterFilMessage();

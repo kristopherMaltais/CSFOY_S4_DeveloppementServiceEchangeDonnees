@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.2.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\M06_BL_CompteBancaire\M06_BL_CompteBancaire.csproj" />
     <ProjectReference Include="..\M06_DAL_CompteBancaire\M06_DAL_CompteBancaire.csproj" />
   </ItemGroup>

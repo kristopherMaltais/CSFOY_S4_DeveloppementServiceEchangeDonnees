@@ -16,6 +16,10 @@ namespace M06_BL_CompteBancaire
         public string TypeTransaction { get; set; }
 
         // ** Constructeurs ** //
+        public Transaction()
+        {
+            ;
+        }
         public Transaction(Guid p_CompteID, string p_typeTransaction)
         {
             this.CompteID = p_CompteID;

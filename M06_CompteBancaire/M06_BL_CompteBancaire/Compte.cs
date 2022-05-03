@@ -15,6 +15,10 @@ namespace M06_BL_CompteBancaire
         public string TypeCompte { get; set; }
 
         // ** Constructeurs ** //
+        public Compte()
+        {
+            ;
+        }
         public Compte(string p_typeCompte)
         {
             this.CompteID = Guid.NewGuid();

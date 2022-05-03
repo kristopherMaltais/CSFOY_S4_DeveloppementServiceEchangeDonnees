@@ -62,19 +62,20 @@ namespace M06_API_CompteBancaire.Controllers
             }
 
             p_transaction.TransactionID = Guid.NewGuid();
+            EnveloppeDTO enveloppeAEnvoyer = new EnveloppeDTO(p_transaction, "creation");
 
             // RABBIT MQ
             ConnectionFactory factory = new ConnectionFactory() { HostName = "localhost" };
-            string message = JsonConvert.SerializeObject(p_transaction);
+            string message = JsonConvert.SerializeObject(enveloppeAEnvoyer);
             using (IConnection connection = factory.CreateConnection())
             {
                 using (IModel channel = connection.CreateModel())
                 {
-                    channel.QueueDeclare(queue: "transaction", durable: false, exclusive: false, autoDelete: false, arguments: null);
+                    channel.QueueDeclare(queue: "compteBancaire", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
                     byte[] body = Encoding.UTF8.GetBytes(message);
 
-                    channel.BasicPublish(exchange: "", routingKey: "transaction", body: body);
+                    channel.BasicPublish(exchange: "", routingKey: "compteBancaire", body: body);
                 }
             }
             // FIN RABBIT MQ

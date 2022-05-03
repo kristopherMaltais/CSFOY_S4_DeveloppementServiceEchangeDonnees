@@ -62,19 +62,20 @@ namespace M06_API_CompteBancaire.Controllers
             }
 
             p_compteBancaire.CompteID = Guid.NewGuid();
+            EnveloppeDTO enveloppeAEnvoyer = new EnveloppeDTO(p_compteBancaire, "creation");
 
             // RABBIT MQ
             ConnectionFactory factory = new ConnectionFactory() { HostName = "localhost" };
-            string message = JsonConvert.SerializeObject(p_compteBancaire);
+            string message = JsonConvert.SerializeObject(enveloppeAEnvoyer);
             using (IConnection connection = factory.CreateConnection())
             {
                 using (IModel channel = connection.CreateModel())
                 {
-                    channel.QueueDeclare(queue: "compte", durable: false, exclusive: false, autoDelete: false, arguments: null);
+                    channel.QueueDeclare(queue: "compteBancaire", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
                     byte[] body = Encoding.UTF8.GetBytes(message);
 
-                    channel.BasicPublish(exchange: "", routingKey: "compte", body: body);
+                    channel.BasicPublish(exchange: "", routingKey: "compteBancaire", body: body);
                 }
             }
             // FIN RABBIT MQ
@@ -99,18 +100,20 @@ namespace M06_API_CompteBancaire.Controllers
                 return NotFound();
             }
 
+            EnveloppeDTO enveloppeAEnvoyer = new EnveloppeDTO(p_compteBancaire, "modification");
+
             // RABBIT MQ
             ConnectionFactory factory = new ConnectionFactory() { HostName = "localhost" };
-            string message = JsonConvert.SerializeObject(p_compteBancaire);
+            string message = JsonConvert.SerializeObject(enveloppeAEnvoyer);
             using (IConnection connection = factory.CreateConnection())
             {
                 using (IModel channel = connection.CreateModel())
                 {
-                    channel.QueueDeclare(queue: "compte", durable: false, exclusive: false, autoDelete: false, arguments: null);
+                    channel.QueueDeclare(queue: "compteBancaire", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
                     byte[] body = Encoding.UTF8.GetBytes(message);
 
-                    channel.BasicPublish(exchange: "", routingKey: "compte", body: body);
+                    channel.BasicPublish(exchange: "", routingKey: "compteBancaire", body: body);
                 }
             }
             // FIN RABBIT MQ

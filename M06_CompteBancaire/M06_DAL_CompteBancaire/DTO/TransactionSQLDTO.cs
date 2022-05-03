@@ -17,10 +17,10 @@ namespace M06_DAL_CompteBancaire.DTO
         // ** Propriétés ** //
         [Key]
         [Column("IDENTIFIANT")]
-        public Guid TransactionID { get; set; }
+        public string TransactionID { get; set; }
 
         [Column("COMPTEIDENTIFIANT")]
-        public Guid CompteID { get; set; }
+        public string CompteID { get; set; }
 
         [Column("TYPETRANSACTION")]
         public string TypeTransaction { get; set; }
@@ -32,15 +32,15 @@ namespace M06_DAL_CompteBancaire.DTO
         }
         public TransactionSQLDTO(Transaction p_transactionAConvertir)
         {
-            this.TransactionID = p_transactionAConvertir.TransactionID;
-            this.CompteID = p_transactionAConvertir.CompteID;
+            this.TransactionID = p_transactionAConvertir.TransactionID.ToString();
+            this.CompteID = p_transactionAConvertir.CompteID.ToString();
             this.TypeTransaction = p_transactionAConvertir.TypeTransaction;
         }
 
         // ** Méthodes ** //
         public Transaction VersEntite()
         {
-            return new Transaction(this.TransactionID, this.CompteID, this.TypeTransaction);
+            return new Transaction(Guid.Parse(this.TransactionID), Guid.Parse(this.CompteID), this.TypeTransaction);
         }
     }
 }
