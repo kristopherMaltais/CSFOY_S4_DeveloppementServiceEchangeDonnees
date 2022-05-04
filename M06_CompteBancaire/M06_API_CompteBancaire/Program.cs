@@ -1,6 +1,7 @@
 using M06_API_CompteBancaire.Data;
 using M06_BL_CompteBancaire;
 using M06_DAL_CompteBancaire;
+using M06_FilMessages;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,7 @@ builder.Services.AddControllersWithViews();
 // INJECTION DES DÉPENDANCES
 builder.Services.AddScoped<IDepot, DepotCompteBancaire>();
 builder.Services.AddScoped<ManipulerCompteBancaire>();
+builder.Services.AddScoped<Producteur>(producteur => new Producteur("m06-comptes"));
 
 builder.Services.AddSwaggerDocument();
 var app = builder.Build();

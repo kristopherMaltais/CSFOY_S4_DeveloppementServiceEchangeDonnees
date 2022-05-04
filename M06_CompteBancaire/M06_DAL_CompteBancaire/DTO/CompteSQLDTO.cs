@@ -16,6 +16,7 @@ namespace M06_DAL_CompteBancaire.DTO
 
         // ** Propriétés ** //
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("IDENTIFIANT")]
         public string CompteID { get; set; }
 

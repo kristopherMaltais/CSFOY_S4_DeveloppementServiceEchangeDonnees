@@ -1,5 +1,6 @@
 ﻿using M06_API_CompteBancaire.Controllers.DTO;
 using M06_BL_CompteBancaire;
+using M06_FilMessages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -15,17 +16,19 @@ namespace M06_API_CompteBancaire.Controllers
     {
         // ** Champs ** //
         private ManipulerCompteBancaire m_manipulationCompteBancaire;
+        private Producteur m_producteur;
 
         // ** Propriétés ** //
 
         // ** Constructeurs ** //
-        public TransactionController(ManipulerCompteBancaire p_manipulationCompteBancaire)
+        public TransactionController(ManipulerCompteBancaire p_manipulationCompteBancaire, Producteur p_producteur)
         {
             this.m_manipulationCompteBancaire = p_manipulationCompteBancaire;
+            this.m_producteur = p_producteur;
         }
 
         // ** Méthodes ** //
-        // GET: api/comptesBancaires
+            // GET: api/comptesBancaires
         [HttpGet]
         [ProducesResponseType(200)]
         public ActionResult<IEnumerable<TransactionAPIDTO>> Get()
@@ -34,7 +37,7 @@ namespace M06_API_CompteBancaire.Controllers
             return Ok(transactions.Select(transaction => new TransactionAPIDTO(transaction)));
         }
 
-        //GET: api/comptesBancaires/id
+            //GET: api/comptesBancaires/id
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -50,7 +53,7 @@ namespace M06_API_CompteBancaire.Controllers
             return NotFound();
         }
 
-        // POST: api/comptesBancaires
+            // POST: api/comptesBancaires
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
@@ -61,30 +64,10 @@ namespace M06_API_CompteBancaire.Controllers
                 return BadRequest();
             }
 
-            p_transaction.TransactionID = Guid.NewGuid();
             EnveloppeDTO enveloppeAEnvoyer = new EnveloppeDTO(p_transaction, "creation");
-
-            // RABBIT MQ
-            ConnectionFactory factory = new ConnectionFactory() { HostName = "localhost" };
-            string message = JsonConvert.SerializeObject(enveloppeAEnvoyer);
-            using (IConnection connection = factory.CreateConnection())
-            {
-                using (IModel channel = connection.CreateModel())
-                {
-                    channel.QueueDeclare(queue: "compteBancaire", durable: false, exclusive: false, autoDelete: false, arguments: null);
-
-                    byte[] body = Encoding.UTF8.GetBytes(message);
-
-                    channel.BasicPublish(exchange: "", routingKey: "compteBancaire", body: body);
-                }
-            }
-            // FIN RABBIT MQ
+            this.m_producteur.PousserFilMessage(enveloppeAEnvoyer.VersEntite());
 
             return CreatedAtAction(nameof(Get), new { id = p_transaction.TransactionID }, p_transaction);
         }
-
-        
-        // PUT
-        // DELETE
     }
 }

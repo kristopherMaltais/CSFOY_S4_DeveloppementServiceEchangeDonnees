@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\M06_BL_CompteBancaire\M06_BL_CompteBancaire.csproj" />
     <ProjectReference Include="..\M06_DAL_CompteBancaire\M06_DAL_CompteBancaire.csproj" />
+    <ProjectReference Include="..\M06_FilMessages\M06_FilMessages.csproj" />
   </ItemGroup>
 
 </Project>

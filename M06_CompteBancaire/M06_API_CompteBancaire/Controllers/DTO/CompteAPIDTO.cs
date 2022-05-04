@@ -22,7 +22,7 @@ namespace M06_API_CompteBancaire.Controllers.DTO
         }
 
         // ** Méthodes ** //
-        public Compte VersIdentite()
+        public Compte VersEntite()
         {
             return new Compte(this.CompteID, this.TypeCompte);
         }

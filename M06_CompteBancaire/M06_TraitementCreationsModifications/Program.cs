@@ -2,12 +2,10 @@
 
 
 using M06_BL_CompteBancaire;
-using M06_DAL_CompteBancaire;
-using M06_TraitementCreationsModifications;
-using Newtonsoft.Json;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using System.Text;
+using M06_FilMessages;
 
-TraitementFilMessage traitementFilMessage = new TraitementFilMessage();
-traitementFilMessage.EcouterFilMessage();
+Producteur producteurLettresMortes = new Producteur("m06-comptes-lettres-mortes");
+ActionDB actionSurBd = new ActionDB();
+Consommateur consommateurComptesTransactions = new Consommateur("m06-comptes", actionSurBd, producteurLettresMortes);
+consommateurComptesTransactions.TirerFilMessage();
+

@@ -25,6 +25,12 @@ namespace M06_DAL_CompteBancaire.DTO
         [Column("TYPETRANSACTION")]
         public string TypeTransaction { get; set; }
 
+        [Column("DATETRANSACTION")]
+        public DateTime Date { get; set; }
+
+        [Column("MONTANT")]
+        public Decimal Montant { get; set; }
+
         // ** Constructeurs ** //
         public TransactionSQLDTO()
         {
@@ -35,12 +41,14 @@ namespace M06_DAL_CompteBancaire.DTO
             this.TransactionID = p_transactionAConvertir.TransactionID.ToString();
             this.CompteID = p_transactionAConvertir.CompteID.ToString();
             this.TypeTransaction = p_transactionAConvertir.TypeTransaction;
+            this.Date = p_transactionAConvertir.Date;
+            this.Montant = p_transactionAConvertir.Montant;
         }
 
         // ** Méthodes ** //
         public Transaction VersEntite()
         {
-            return new Transaction(Guid.Parse(this.TransactionID), Guid.Parse(this.CompteID), this.TypeTransaction);
+            return new Transaction(Guid.Parse(this.TransactionID), Guid.Parse(this.CompteID), this.TypeTransaction, this.Date, this.Montant);
         }
     }
 }

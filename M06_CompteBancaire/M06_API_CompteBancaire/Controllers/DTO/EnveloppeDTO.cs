@@ -1,4 +1,6 @@
-﻿namespace M06_API_CompteBancaire.Controllers.DTO
+﻿using M06_BL_CompteBancaire;
+
+namespace M06_API_CompteBancaire.Controllers.DTO
 {
     public class EnveloppeDTO
     {
@@ -20,8 +22,8 @@
             this.ActionId = Guid.NewGuid();
             this.Compte = p_compte;
             this.Transaction = null;
-            
-           
+
+
         }
         public EnveloppeDTO(TransactionAPIDTO p_transaction, string p_action)
         {
@@ -33,5 +35,22 @@
         }
 
         // ** méthodes ** //
+        public Enveloppe VersEntite()
+        {
+            Enveloppe enveloppeEntite = new Enveloppe();
+            enveloppeEntite.Action = this.Action;
+            enveloppeEntite.Contenu = this.Contenu;
+            enveloppeEntite.ActionId = this.ActionId;
+            if(this.Transaction is not null)
+            {
+                enveloppeEntite.Transaction = this.Transaction.VersEntite();
+            }
+
+            if(this.Compte is not null)
+            {
+                enveloppeEntite.Compte = this.Compte.VersEntite();
+            }
+            return enveloppeEntite;
+        }
     }
 }

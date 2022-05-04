@@ -63,24 +63,23 @@ namespace M06_DAL_CompteBancaire
             }
 
             CompteSQLDTO compteAModifier = new CompteSQLDTO(p_compteAModifier);
+            Console.WriteLine(compteAModifier.CompteID.ToString());
             this.m_DbContext.Update(compteAModifier);
             this.m_DbContext.SaveChanges();
             this.m_DbContext.ChangeTracker.Clear();
         }
-        public Compte ObtenirCompte(Guid p_identifiantCompte)
+        public Compte? ObtenirCompte(Guid p_identifiantCompte)
         {
-            CompteSQLDTO compteTrouve = this.m_DbContext.Comptes.Where(compte => compte.CompteID == p_identifiantCompte.ToString()).FirstOrDefault();
-            return compteTrouve.VersEntite();
+            return this.m_DbContext.Comptes.Where(compte => compte.CompteID == p_identifiantCompte.ToString()).SingleOrDefault()?.VersEntite();
         }
         public IEnumerable<Compte> ObtenirComptes()
         {
             List<Compte> comptes = this.m_DbContext.Comptes.Select(compte => compte.VersEntite()).ToList();
             return comptes;
         }
-        public Transaction ObtenirTransaction(Guid p_identifiantTransaction)
+        public Transaction? ObtenirTransaction(Guid p_identifiantTransaction)
         {
-            TransactionSQLDTO TransactionTrouvee = this.m_DbContext.Transactions.Where(transaction => transaction.TransactionID == p_identifiantTransaction.ToString()).FirstOrDefault();
-            return TransactionTrouvee.VersEntite();
+            return this.m_DbContext.Transactions.Where(transaction => transaction.TransactionID == p_identifiantTransaction.ToString()).SingleOrDefault()?.VersEntite();
         }
         public IEnumerable<Transaction> ObtenirTransactions()
         {
