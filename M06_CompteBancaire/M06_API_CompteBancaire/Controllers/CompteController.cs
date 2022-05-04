@@ -37,6 +37,7 @@ namespace M06_API_CompteBancaire.Controllers
             return Ok(comptes.Select(compte => new CompteAPIDTO(compte)));
         }
 
+
             //GET: api/comptesBancaires/id
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
@@ -53,6 +54,7 @@ namespace M06_API_CompteBancaire.Controllers
             return NotFound();
         }
 
+
             // POST: api/comptesBancaires
         [HttpPost]
         [ProducesResponseType(201)]
@@ -64,11 +66,19 @@ namespace M06_API_CompteBancaire.Controllers
                 return BadRequest();
             }
 
+            List<Compte> comptesExistants = this.m_manipulationCompteBancaire.ObtenirComptes().ToList();
+            bool compteExiste = comptesExistants.Any(compte => compte.CompteID.ToString() == p_compteBancaire.CompteID.ToString());
+            if (compteExiste)
+            {
+                return BadRequest();
+            }
+
             EnveloppeDTO enveloppeAEnvoyer = new EnveloppeDTO(p_compteBancaire, "creation");
             this.m_producteur.PousserFilMessage(enveloppeAEnvoyer.VersEntite());
 
             return CreatedAtAction(nameof(Get), new { id = p_compteBancaire.CompteID}, p_compteBancaire);
         }
+
 
             // PUT: api/comptesBancaires
         [HttpPut("{id}")]

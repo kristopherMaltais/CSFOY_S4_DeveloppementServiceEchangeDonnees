@@ -53,7 +53,7 @@ namespace M06_API_CompteBancaire.Controllers
             return NotFound();
         }
 
-            // POST: api/comptesBancaires
+        // POST: api/comptesBancaires
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
@@ -63,6 +63,16 @@ namespace M06_API_CompteBancaire.Controllers
             {
                 return BadRequest();
             }
+
+            List<Transaction> transactionsExistantes = this.m_manipulationCompteBancaire.ObtenirTransactions().ToList();
+            List<Compte> comptesExistants = this.m_manipulationCompteBancaire.ObtenirComptes().ToList();
+            bool compteExistant = comptesExistants.Any(compte => compte.CompteID.ToString() == p_transaction.CompteID.ToString());
+            bool transactionExiste = transactionsExistantes.Any(transaction => transaction.TransactionID.ToString() == p_transaction.TransactionID.ToString());
+            if (transactionExiste || !compteExistant)
+            {
+                return BadRequest();
+            }
+
 
             EnveloppeDTO enveloppeAEnvoyer = new EnveloppeDTO(p_transaction, "creation");
             this.m_producteur.PousserFilMessage(enveloppeAEnvoyer.VersEntite());
