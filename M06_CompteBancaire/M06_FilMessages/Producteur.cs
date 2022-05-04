@@ -34,16 +34,17 @@ namespace M06_FilMessages
         public void PousserFilMessage(Enveloppe p_message)
         {
             string message = this.SerialierJson(p_message);
-
+            byte[] body = Encoding.UTF8.GetBytes(message);
+            this.PousserFil(body);
+        }
+        public void PousserFil(byte[] p_message)
+        {
             using (IConnection connection = m_factory.CreateConnection())
             {
                 using (IModel channel = connection.CreateModel())
                 {
                     channel.QueueDeclare(queue: this.m_nomFil, durable: false, exclusive: false, autoDelete: false, arguments: null);
-
-                    byte[] body = Encoding.UTF8.GetBytes(message);
-
-                    channel.BasicPublish(exchange: "", routingKey: this.m_nomFil, body: body);
+                    channel.BasicPublish(exchange: "", routingKey: this.m_nomFil, body: p_message);
                 }
             }
         }

@@ -12,4 +12,8 @@
     <ProjectReference Include="..\M06_TraitementCreationsModifications\M06_TraitementCreationsModifications.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TransactionsEnErreur\" />
+  </ItemGroup>
+
 </Project>

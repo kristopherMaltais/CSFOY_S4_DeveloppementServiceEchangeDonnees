@@ -40,6 +40,7 @@ namespace M06_DAL_CompteBancaire
             this.m_DbContext.Add(nouveauCompte);
             this.m_DbContext.SaveChanges();
             this.m_DbContext.ChangeTracker.Clear();
+            Console.WriteLine("test");
         }
         public void CreerTransaction(Transaction p_transactionACreer)
         {

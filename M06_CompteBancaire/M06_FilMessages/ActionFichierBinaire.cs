@@ -9,10 +9,16 @@ namespace M06_FilMessages
 {
     public class ActionFichierBinaire : IActionMessage
     {
-
-        public void Executer(Enveloppe p_enveloppe)
+        public void Executer(byte[] p_message)
         {
-            throw new NotImplementedException();
+            //string nomFichier = this.GenererNomFichierBinaire();
+            File.WriteAllBytes($"..\\..\\..\\TransactionsEnErreur\\{this.GenererNomFichierBinaire()}.bin", p_message);
+        }
+        public string GenererNomFichierBinaire()
+        {
+            string dateHeure = DateTime.Now.ToString().Replace(" ", "_").Replace(":", "_");
+            string identifiantUnique = Guid.NewGuid().ToString();
+            return $"{dateHeure}_{identifiantUnique}";
         }
     }
 }

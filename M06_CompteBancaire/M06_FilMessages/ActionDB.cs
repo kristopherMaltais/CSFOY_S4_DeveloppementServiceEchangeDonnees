@@ -1,5 +1,6 @@
 ﻿using M06_BL_CompteBancaire;
 using M06_DAL_CompteBancaire;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,30 +11,31 @@ namespace M06_FilMessages
 {
     public class ActionDB : IActionMessage
     {
-        public void Executer(Enveloppe p_enveloppe)
+        public void Executer(Byte[] p_message)
         {
             ManipulerCompteBancaire manipuler = this.CreerContexteDAL();
+            Enveloppe enveloppe = this.DeserialiserJson(System.Text.Encoding.Default.GetString(p_message));
 
-            if (p_enveloppe is not null)
+            if (enveloppe is not null)
             {
-                if (p_enveloppe.Contenu == "compte")
+                if (enveloppe.Contenu == "compte")
                 {
-                    if (p_enveloppe.Action == "creation")
+                    if (enveloppe.Action == "creation")
                     {
-                        manipuler.CreerCompte(p_enveloppe.Compte);
+                        manipuler.CreerCompte(enveloppe.Compte);
                     }
 
-                    if (p_enveloppe.Action == "modification")
+                    if (enveloppe.Action == "modification")
                     {
-                        manipuler.ModifierCompte(p_enveloppe.Compte);
+                        manipuler.ModifierCompte(enveloppe.Compte);
                     }
                 }
 
-                if (p_enveloppe.Contenu == "transaction")
+                if (enveloppe.Contenu == "transaction")
                 {
-                    if (p_enveloppe.Action == "creation")
+                    if (enveloppe.Action == "creation")
                     {
-                        manipuler.CreerTransaction(p_enveloppe.Transaction);
+                        manipuler.CreerTransaction(enveloppe.Transaction);
                     }
                 }
             }
@@ -42,6 +44,16 @@ namespace M06_FilMessages
         {
             IDepot debotCompteBancaire = new DepotCompteBancaire(DbContextGeneration.ObtenirApplicationDBContext());
             return new ManipulerCompteBancaire(debotCompteBancaire);
+        }
+        private Enveloppe DeserialiserJson(string p_message)
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            };
+
+            Enveloppe enveloppe = JsonConvert.DeserializeObject<Enveloppe>(p_message, settings);
+            return enveloppe;
         }
     }
 }

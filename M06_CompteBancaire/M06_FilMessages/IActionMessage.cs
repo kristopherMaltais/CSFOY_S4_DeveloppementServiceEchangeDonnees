@@ -9,6 +9,6 @@ namespace M06_FilMessages
 {
     public interface IActionMessage
     {
-        public void Executer(Enveloppe p_enveloppe);
+        public void Executer(Byte[] p_message);
     }
 }

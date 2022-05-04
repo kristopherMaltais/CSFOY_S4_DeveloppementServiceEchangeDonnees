@@ -25,6 +25,7 @@ namespace M06_FilMessages
             this.m_waitHandle = new ManualResetEvent(false);
             this.m_nomFil = p_nomFil;
             this.m_actionMessage = p_actionMessage;
+            this.m_producteur = p_producteur;
         }
 
         // ** méthodes ** //
@@ -39,45 +40,30 @@ namespace M06_FilMessages
                     EventingBasicConsumer consommateur = new EventingBasicConsumer(channel);
                     consommateur.Received += (model, ea) =>
                     {
-                        //string message = null;
-                        //try
-                        //{
-                            byte[] donnees = ea.Body.ToArray();
-                            string message = Encoding.UTF8.GetString(donnees);
-                            this.ReagirMessage(this.DeserialierJson(message));
+                        byte[] donnees = ea.Body.ToArray();
+                        try
+                        {
+                            this.ReagirMessage(donnees);
                             channel.BasicAck(ea.DeliveryTag, false);
-                        //}
-                        //catch
-                        //{
-                        //    this.m_producteur.PousserFilMessage(this.DeserialierJson(message));
-                        //}
-                       
+                        }
+                        catch
+                        {
+                            if(this.m_producteur is not null)
+                            {
+                                this.m_producteur.PousserFil(donnees);
+                            }
+                        }
+
                     };
                     
                     channel.BasicConsume(queue: this.m_nomFil, autoAck: false, consumer: consommateur);
-                   
                     this.m_waitHandle.WaitOne();
                 }
             }
         }
-        private Enveloppe DeserialierJson(string p_message)
+        private void ReagirMessage(Byte[] p_message)
         {
-            JsonSerializerSettings settings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto
-            };
-
-            Enveloppe enveloppe = JsonConvert.DeserializeObject<Enveloppe>(p_message, settings);
-            return enveloppe;
-        }
-        private void ReagirMessage(Enveloppe p_enveloppe)
-        {
-            this.m_actionMessage.Executer(p_enveloppe);
-        }
-        private ManipulerCompteBancaire CreerContexteDAL()
-        {
-            IDepot debotCompteBancaire = new DepotCompteBancaire(DbContextGeneration.ObtenirApplicationDBContext());
-            return new ManipulerCompteBancaire(debotCompteBancaire);
+            this.m_actionMessage.Executer(p_message);
         }
     }
 }
