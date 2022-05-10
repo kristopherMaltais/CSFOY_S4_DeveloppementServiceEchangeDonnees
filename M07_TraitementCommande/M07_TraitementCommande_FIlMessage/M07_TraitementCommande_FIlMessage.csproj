@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -14,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\M07_TraitementCommande_BL\M07_TraitementCommande_BL.csproj" />
-    <ProjectReference Include="..\M07_TraitementCommande_FIlMessage\M07_TraitementCommande_FIlMessage.csproj" />
   </ItemGroup>
 
 </Project>

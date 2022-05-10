@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M07_TraitementCommande_producteur", "M07_TraitementCommande_producteur\M07_TraitementCommande_producteur.csproj", "{63877A36-D9D4-454A-A9EE-23CB95335213}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "M07_TraitementCommande_producteur", "M07_TraitementCommande_producteur\M07_TraitementCommande_producteur.csproj", "{63877A36-D9D4-454A-A9EE-23CB95335213}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M07_TraitementCommande_journal", "M07_TraitementCommande_journal\M07_TraitementCommande_journal.csproj", "{1817447E-84E4-47C4-BED8-FEB82C9E499D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "M07_TraitementCommande_journal", "M07_TraitementCommande_journal\M07_TraitementCommande_journal.csproj", "{1817447E-84E4-47C4-BED8-FEB82C9E499D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M07_TraitementCommande_facturation", "M07_TraitementCommande_facturation\M07_TraitementCommande_facturation.csproj", "{99E1D9F5-07B1-4D9B-A820-3264E58C7924}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "M07_TraitementCommande_facturation", "M07_TraitementCommande_facturation\M07_TraitementCommande_facturation.csproj", "{99E1D9F5-07B1-4D9B-A820-3264E58C7924}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M07_TraitementCommande_expedition", "M07_TraitementCommande_expedition\M07_TraitementCommande_expedition.csproj", "{C432F8D4-0172-4D1F-9E04-0AF444E897C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "M07_TraitementCommande_expedition", "M07_TraitementCommande_expedition\M07_TraitementCommande_expedition.csproj", "{C432F8D4-0172-4D1F-9E04-0AF444E897C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M07_TraitementCommande_CourrielsPremium", "M07_TraitementCommande_CourrielsPremium\M07_TraitementCommande_CourrielsPremium.csproj", "{E1518C85-1A07-402A-A2D1-C36F3C4B682C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "M07_TraitementCommande_CourrielsPremium", "M07_TraitementCommande_CourrielsPremium\M07_TraitementCommande_CourrielsPremium.csproj", "{E1518C85-1A07-402A-A2D1-C36F3C4B682C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M07_TraitementCommande_FIlMessage", "M07_TraitementCommande_FIlMessage\M07_TraitementCommande_FIlMessage.csproj", "{FFEF69FB-992A-45FA-9D48-05C21F2D2CF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M07_TraitementCommande_BL", "M07_TraitementCommande_BL\M07_TraitementCommande_BL.csproj", "{E8CC192C-8989-4682-95CC-E150C6D44FA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{E1518C85-1A07-402A-A2D1-C36F3C4B682C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1518C85-1A07-402A-A2D1-C36F3C4B682C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1518C85-1A07-402A-A2D1-C36F3C4B682C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFEF69FB-992A-45FA-9D48-05C21F2D2CF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFEF69FB-992A-45FA-9D48-05C21F2D2CF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFEF69FB-992A-45FA-9D48-05C21F2D2CF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFEF69FB-992A-45FA-9D48-05C21F2D2CF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8CC192C-8989-4682-95CC-E150C6D44FA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8CC192C-8989-4682-95CC-E150C6D44FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8CC192C-8989-4682-95CC-E150C6D44FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8CC192C-8989-4682-95CC-E150C6D44FA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

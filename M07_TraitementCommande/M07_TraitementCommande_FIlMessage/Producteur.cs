@@ -15,12 +15,14 @@ namespace M07_TraitementCommande_producteur
         private IConnection m_connection;
         private IModel m_model;
         private GenerateurCommande m_generateurCommande;
+        private string m_echange;
 
         // ** Propriétés ** //
 
         // ** Constructeurs ** //
-        public Producteur()
+        public Producteur(string p_echange)
         {
+            this.m_echange = p_echange;
             this.m_generateurCommande = new GenerateurCommande();
             this.m_connectionFactory = new ConnectionFactory() { HostName = "localhost" };
             this.m_connection = this.m_connectionFactory.CreateConnection();
@@ -31,7 +33,7 @@ namespace M07_TraitementCommande_producteur
                 using (this.m_model)
                 {
                     this.m_model.ExchangeDeclare(
-                        exchange: "texteici",
+                        exchange: this.m_echange,
                         type: "topic",
                         durable: true,
                         autoDelete: false
@@ -51,7 +53,7 @@ namespace M07_TraitementCommande_producteur
             var body = Encoding.UTF8.GetBytes(message);
 
             this.m_model.BasicPublish(
-                    exchange: "m07-commandes",
+                    exchange: this.m_echange,
                     routingKey: sujet,
                     basicProperties: null,
                     body: body
