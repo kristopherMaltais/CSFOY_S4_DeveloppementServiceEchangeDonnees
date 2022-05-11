@@ -11,12 +11,16 @@ namespace M07_TraitementCommande_producteur
         // ** Champs ** //
 
         // ** Propriétés ** //
-        public Guid Reference { get; private set; }
-        public string Nom { get; private set; }
-        public decimal Prix { get; private set; }
-        public int Quantite { get; private set; }
+        public Guid Reference { get; set; }
+        public string Nom { get; set; }
+        public decimal Prix { get; set; }
+        public int Quantite { get; set; }
 
         // ** Constructeurs ** //
+        public Article()
+        {
+            ;
+        }
         public Article(string p_nom, decimal p_prix, int p_quantite)
         {
             this.Nom = p_nom;

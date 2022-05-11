@@ -32,7 +32,7 @@ namespace M07_TraitementCommande_producteur
         // ** Méthodes ** //
         public Commande GenererCommande()
         {
-            string nomClient = this.m_nomsClients[this.m_aleatoire.Next(1, 6)];
+            string nomClient = this.m_nomsClients[this.m_aleatoire.Next(1, 5)];
             List<Article> articles = new List<Article>();
             int nombreItem = this.m_aleatoire.Next(1, 6);
 

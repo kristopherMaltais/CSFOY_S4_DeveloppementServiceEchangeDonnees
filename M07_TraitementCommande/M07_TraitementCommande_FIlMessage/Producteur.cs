@@ -27,6 +27,11 @@ namespace M07_TraitementCommande_producteur
             this.m_connectionFactory = new ConnectionFactory() { HostName = "localhost" };
             this.m_connection = this.m_connectionFactory.CreateConnection();
             this.m_model = m_connection.CreateModel();
+        }
+
+        // ** Méthodes ** //
+        public void PousserMessage()
+        {
 
             using (this.m_connection)
             {
@@ -38,26 +43,24 @@ namespace M07_TraitementCommande_producteur
                         durable: true,
                         autoDelete: false
                     );
+
+                    
+                    while(true)
+                    {
+                        Console.ReadLine();
+                        Commande commande = this.m_generateurCommande.GenererCommande();
+                        Console.WriteLine(commande.ToString());
+
+                        string message = JsonConvert.SerializeObject(commande);
+                        string sujet = $"commande.placee.{this.m_generateurCommande.GenererTypeCompte}";
+
+                        var body = Encoding.UTF8.GetBytes(message);
+
+                        this.m_model.BasicPublish(exchange: this.m_echange, routingKey: sujet, basicProperties: null, body: body);
+                    }
                 }
             }
-        }
-
-        // ** Méthodes ** //
-        public void PousserMessage()
-        {
-            Commande commande = this.m_generateurCommande.GenererCommande();
-
-            string message = JsonConvert.SerializeObject(commande);
-            string sujet = $"commande.placee.{this.m_generateurCommande.GenererTypeCompte}";
-
-            var body = Encoding.UTF8.GetBytes(message);
-
-            this.m_model.BasicPublish(
-                    exchange: this.m_echange,
-                    routingKey: sujet,
-                    basicProperties: null,
-                    body: body
-                );
+            
         }
     }
 }
