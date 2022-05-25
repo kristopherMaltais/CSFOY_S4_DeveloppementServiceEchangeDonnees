@@ -1,0 +1,165 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Chat</h2>
+
+<div class="row" id="login-row">
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="nomUtilisateur" class="control-label">Nom utilisateur</label>
+            <input name="nomUtilisateur" id="nomUtilisateur" class="form-control" type="text" />
+        </div>
+        <button class="btn btn-warning btn-sm" id="btn-startChat">
+            Démarrer le chat
+        </button>
+    </div>
+</div>
+
+<div class="row" id="chat-row" style="display:none">
+    <div class="col-md-5">
+        <div class="panel panel-primary">
+            <div class="panel-heading" id="accordion">
+                 <input type="text" id="txtNomNouveauSalon" pattern="[a-zA-Z_-]+" />
+                 <button id="btCreerSalon">Créer un nouveau salon</button>
+                <span class="glyphicon glyphicon-comment"></span> <h2>Discussion en direct</h2>
+                 <select id="lstAutresSalon"></select>
+                 <button id="btRejoindreSalon">Rejoindre salon</button>
+            </div>
+            <div class="panel-collapse" id="collapseOne">
+                <div class="panel-body">
+                    <ul class="chat" id="listeMessages"></ul>
+                </div>
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input id="message-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                        <span class="input-group-btn">
+                            <button class="btn btn-warning btn-sm" id="btn-send">
+                                Send
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+
+    <script>
+        let connexion = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+        document.getElementById("btCreerSalon").onclick = function () { connexion.invoke("CreerRejoindre", document.getElementById("txtNomNouveauSalon").value); document.getElementById("txtNomNouveauSalon").value = ""; };
+        document.getElementById("btRejoindreSalon").onclick = function () { connexion.invoke("CreerRejoindre", document.getElementById("lstAutresSalon").value); };
+        
+        $(function () {
+            let nomUtilisateur = null;
+
+            document.getElementById("btn-startChat")
+                .onclick = function () {
+                   nomUtilisateur = document.getElementById("nomUtilisateur").value;
+                   document.getElementById("login-row").style.display = 'none';
+                   document.getElementById("chat-row").style.display = 'block';
+
+                   connexion.start().catch(function (err) {
+                            return console.error(err.toString());
+                   });
+
+                   connexion.on("AfficherMessageAutres", function (message) {
+                            let afficherGabaritMessage = function (message, gabarit) {
+                                    gabarit = gabarit.replace("{{message}}", message.texte);
+                                    gabarit = gabarit.replace("{{userDisplayName}}", message.nomUtilisateur);
+                                    $("#listeMessages").append($(gabarit));
+                                }
+                             afficherGabaritMessage(message, gabaritMessageUtilisateurAutre);
+                        });
+
+                    connexion.on("AfficherMessageMoi", function (message) {
+                        let afficherGabaritMessage = function (message, gabarit) {
+                                    gabarit = gabarit.replace("{{message}}", message.texte);
+                                    gabarit = gabarit.replace("{{userDisplayName}}", message.nomUtilisateur);
+                                    $("#listeMessages").append($(gabarit));
+                                }
+                        afficherGabaritMessage(message, gabaritMessageUtilisateurCourant);
+                    });
+
+                    connexion.on("DemarrageChat", function (messages) {
+                        let menu = document.getElementById('listeMessages');
+                            while (menu.firstChild) {
+                                menu.removeChild(menu.firstChild);
+                            }
+
+                        messages.forEach(function (message) {
+                            if (nomUtilisateur == message.nomUtilisateur) {
+                                afficherMessageMoi(message);
+                            } else {
+                                afficherMessageAutre(message);
+                            }
+                        });
+                    });
+
+                    connexion.on("MAJSalonDisponible", function (lstSalonDisponible) {
+                        let nombreOptions = document.getElementById("lstAutresSalon").options.length;
+                        for (indexOption = nombreOptions - 1; indexOption >= 0; indexOption--)
+                        {
+                            document.getElementById("lstAutresSalon").options[indexOption] = null;
+                        }
+                            
+                        lstSalonDisponible.forEach(function (nomTableau) {
+                            let option = document.createElement("option");
+                            option.text = nomTableau;
+                            option.value = nomTableau;
+                            document.getElementById("lstAutresSalon").add(option);
+                        });
+                    });
+
+                };
+
+            document.getElementById("btn-send")
+                .onclick = function () {
+                    let texteMessage = document.getElementById("message-input").value;
+                    let message = {
+                        texte: texteMessage,
+                        nomUtilisateur: nomUtilisateur
+                    };
+                    connexion.invoke("EnvoyerMessage", message);
+
+                    document.getElementById("message-input").value = "";
+                };
+
+        });
+
+        var gabaritMessageUtilisateurCourant = `
+                            <li class="right clearfix">
+                            <span class="chat-img pull-right">
+                                <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
+                            </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="pull-right primary-font">{{userDisplayName}}</strong>
+                                </div>
+                                <p>
+                                    {{message}}
+                                </p>
+                            </div>
+                        </li>
+    `;
+
+        var gabaritMessageUtilisateurAutre = `
+                        <li class="left clearfix">
+                            <span class="chat-img pull-left">
+                                <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                            </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="pull-right primary-font">{{userDisplayName}}</strong>
+                                </div>
+                                <p>
+                                    {{message}}
+                                </p>
+                            </div>
+                        </li>
+        `;
+    </script>
+}
