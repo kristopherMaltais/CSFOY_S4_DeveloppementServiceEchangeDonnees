@@ -13,6 +13,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.16.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\M08_BL_ServiceStatistiqueClientele\M08_BL_ServiceStatistiqueClientele.csproj" />
+    <ProjectReference Include="..\M08_DAL_ServiceStatistiqueClientele\M08_DAL_ServiceStatistiqueClientele.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,7 @@
 using M08_Application.Data;
+using M08_Application.Entite;
+using M08_BL_ServiceStatistiqueClientele;
+using M08_DAL_ServiceStatistiqueClientele;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +16,12 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+// INJECTION DES DÉPENDANCES
+builder.Services.AddSingleton<IDepot, DepotAppel>();
+builder.Services.AddScoped<ManipulerDepotAppel>();
+
+builder.Services.AddSwaggerDocument();
 
 var app = builder.Build();
 
@@ -40,5 +49,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+app.UseOpenApi();
+app.UseSwaggerUi3();
 
 app.Run();
+
+
