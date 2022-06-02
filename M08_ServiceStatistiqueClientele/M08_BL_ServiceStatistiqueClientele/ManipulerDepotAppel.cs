@@ -33,5 +33,10 @@ namespace M08_BL_ServiceStatistiqueClientele
         {
             return this.m_depotAppel.ObtenirAppels();
         }
+
+        public Statistiques ObtenirStatistiques()
+        {
+            return this.m_depotAppel.ObtenirStatistiques();
+        }
     }
 }

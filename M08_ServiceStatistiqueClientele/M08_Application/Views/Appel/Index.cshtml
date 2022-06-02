@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>STATISTIQUES APPEL</h2>
+<p id="nombreAppel">Nombre appel: </p>
+<p id="tempsMoyen">Temps moyen appel: </p>
+<p id="nombreAgent">Nombre d'agent présent: </p>
+
+
+
+
+@section scripts {
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+
+    <script>
+        let connexion = new signalR.HubConnectionBuilder().withUrl("/appel").build();
+
+        let nombreAppel = document.getElementById("nombreAppel");
+        let tempsMoyenAppel = document.getElementById("tempsMoyen");
+        let nombreAgent = document.getElementById("nombreAgent");
+
+
+        $(function () {
+            connexion.on("afficherStatistique", function (statistique) {
+                nombreAppel.textContent = "Nombre appel: " + statistique.nombreAppel;
+                tempsMoyen.textContent = "Temps moyen appel: " + statistique.tempsAppelMoyen;
+                nombreAgent.textContent = "Nombre d'agent présent: " + statistique.nombreAgent;
+            });
+
+            connexion.start().catch(function (err) {
+                return console.error(err.toString());
+            });
+
+        });
+    </script>
+}

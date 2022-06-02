@@ -1,8 +1,10 @@
 using M08_Application.Data;
 using M08_Application.Entite;
+using M08_Application.Hubs;
 using M08_BL_ServiceStatistiqueClientele;
 using M08_DAL_ServiceStatistiqueClientele;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +22,8 @@ builder.Services.AddControllersWithViews();
 // INJECTION DES DÉPENDANCES
 builder.Services.AddSingleton<IDepot, DepotAppel>();
 builder.Services.AddScoped<ManipulerDepotAppel>();
+
+builder.Services.AddSignalR();
 
 builder.Services.AddSwaggerDocument();
 
@@ -40,14 +44,21 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+
 app.UseRouting();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllerRoute(
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<AppelHub>("/appel");
+    app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+});
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+
 app.MapRazorPages();
 app.UseOpenApi();
 app.UseSwaggerUi3();
